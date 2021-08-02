@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
+import firebase from 'firebase/app'
+import 'firebase/firestore'
 
 import { IonicVue } from '@ionic/vue';
 
@@ -22,6 +24,21 @@ import '@ionic/vue/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA2YFfC9nviDlzDmMp75o3t3t7vYH03auA",
+  authDomain: "citihack2021-87774.firebaseapp.com",
+  projectId: "citihack2021-87774",
+  storageBucket: "citihack2021-87774.appspot.com",
+  messagingSenderId: "406392240795",
+  appId: "1:406392240795:web:42075de140490e282e643e",
+  measurementId: "G-S7QQ263CLG"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+export const db = firebase.firestore();
 
 const app = createApp(App)
   .use(IonicVue)

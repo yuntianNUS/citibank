@@ -12,14 +12,14 @@
         </ion-toolbar>
       </ion-header>
     
-      <test-buy-content name="Test Buy Page" />
+      <TestBuyContent name="Test Buy Page" />
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent} from '@ionic/vue';
-import TestBuyContent from '@/components/TestBuyContent.vue';
+import TestBuyContent from '../components/TestBuyContent.vue';
 
 export default  {
   name: 'testBuy',
