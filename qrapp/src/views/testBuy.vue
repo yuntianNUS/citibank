@@ -27,3 +27,9 @@ export default  {
 };
 
 </script>
+
+<style scoped>
+ion-page {
+  --background: red
+}
+</style>
