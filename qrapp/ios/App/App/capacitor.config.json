@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "qrapp",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}
