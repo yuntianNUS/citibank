@@ -14,7 +14,7 @@
           </div>
         </ion-toolbar>
       </ion-header>
-      <purchasedVoucherDetail :imageProp="this.image" :voucherValueProp="this.voucherValue" :costProp="this.cost" :termsAddDetailsProp="this.termsAddDetails" :termsStackableProp="this.termsStackable" :validityDaysProp="this.validityDays" :validityItemsProp="this.validityItems" :validityOutletsProp="this.validityOutlets" :costDollarProp="this.costDollar" :costPointsProp="this.costPoints" :expiresOnProp="this.expiresOn"></purchasedVoucherDetail>
+      <redeemedVoucherDetail :redeemedDateProp="this.redeemedDate" :imageProp="this.image" :voucherValueProp="this.voucherValue" :costProp="this.cost" :termsAddDetailsProp="this.termsAddDetails" :termsStackableProp="this.termsStackable" :validityDaysProp="this.validityDays" :validityItemsProp="this.validityItems" :validityOutletsProp="this.validityOutlets" :costDollarProp="this.costDollar" :costPointsProp="this.costPoints" :expiresOnProp="this.expiresOn"></redeemedVoucherDetail>
     </ion-content>
     
   </ion-page>
@@ -23,13 +23,13 @@
 
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import purchasedVoucherDetail from '../components/purchasedVoucherDetail.vue';
+import redeemedVoucherDetail from '../components/redeemedVoucherDetail.vue';
 import {db} from '../main';
 import { defineComponent } from '@vue/runtime-core';
 
 export default defineComponent({
   name: 'Tab2',
-  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, purchasedVoucherDetail},
+  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, redeemedVoucherDetail},
   data() {
     return{
       merchantName: "",
@@ -44,7 +44,8 @@ export default defineComponent({
       validityItems:"",
       validityOutlets:[] as any,
       expiresOn: {},
-      image:""
+      image:"",
+      redeemedDate:""
     }
   },
   methods: {
@@ -60,6 +61,7 @@ export default defineComponent({
                 snapshot2.data().merchant.get().then((snapshot: any) => { //snapshot: merchant data
                   this.merchantName = snapshot.data().name
                   this.image = snapshot2.data().image
+                  this.redeemedDate = this.formatDate(doc.data().redeemedAt.toDate())
                   this.voucherValue = snapshot2.data().value
                   this.costPoints = snapshot2.data().costPoints
                   this.costDollar = snapshot2.data().costDollar

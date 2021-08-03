@@ -2,7 +2,9 @@
   <div>
     <div id = "container">
         <div class= "top-container">
-        <img class="image" src='../assets/iHQ.jpeg'>
+       
+        <img class="image" :src="merchantProp.image">
+        
         <p class="text"> Voucher Value </p>
         <div class="scroll">
         <div class = "box" v-for="item in voucherListProp" :key="item.id">
@@ -39,7 +41,8 @@ import { defineComponent } from '@vue/runtime-core';
 export default defineComponent({
   components: {},
   props: {
-    voucherListProp: {}
+    voucherListProp: {},
+    merchantProp: {}
 },
 methods:{
     display: function (item){

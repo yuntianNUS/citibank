@@ -14,7 +14,7 @@
           </div>
         </ion-toolbar>
       </ion-header>
-      <MerchantVoucherDetail :voucherListProp="this.voucherList"></MerchantVoucherDetail>
+      <MerchantVoucherDetail :voucherListProp="this.voucherList" :merchantProp="this.merchant"></MerchantVoucherDetail>
     </ion-content>
     
   </ion-page>
@@ -35,6 +35,7 @@ export default defineComponent({
       merchantName: "",
       merchantId: this.$route.params.id,
       voucherList: [] as any,
+      merchant:{}
     }
   },
   methods: {
@@ -50,6 +51,9 @@ export default defineComponent({
                         if (snapshot.data().count!=0){
                             this.merchantName = doc.data().name
                             this.voucherList.push(snapshot)
+                            this.merchant = doc.data()
+                            console.log('MERCHANT')
+                            console.log(this.merchant)
                         }
                         
                     })

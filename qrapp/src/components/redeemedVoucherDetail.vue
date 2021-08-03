@@ -15,10 +15,13 @@
         <p> <img id = 'icon' src='../assets/calendar.jpeg'>  This voucher is valid for {{validityDaysProp}} days. Expiring on {{expiresOnProp}}.</p> 
         <p> <img id = 'icon' src='../assets/menuitems.png'>  This voucher is valid for the following items: {{validityItemsProp}}</p> 
         <p> <img id = 'icon' src='../assets/location.png'> This voucher is applicable at the following outlets: {{validityOutletsProp}}</p> 
+        
+        <p class="text"> Redemption Details </p>
+        <p> Redeemed At: {{redeemedDateProp}} </p>
+        <p> Redemption Value: {{voucherValueProp}} </p>
         </div>
-        </div>
-        <div class = "button">
-        <button> Use Now </button>
+
+
         </div>
 
     </div> 
@@ -42,7 +45,8 @@ export default defineComponent({
     validityItemsProp: {},
     validityOutletsProp:{},
     expiresOnProp:{},
-    imageProp:{}
+    imageProp:{},
+    redeemedDateProp:{}
 }
 //   props: {
 //     name: String

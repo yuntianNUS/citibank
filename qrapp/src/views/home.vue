@@ -26,7 +26,7 @@ import HomeVouchers from '../components/HomeVouchers.vue';
 import MerchantVouchers from '../components/MerchantVouchers.vue'
 
 export default  {
-  name: 'Tab1',
+  name: 'Home',
   components: { HomeVouchers, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, MerchantVouchers }
 }
 </script>

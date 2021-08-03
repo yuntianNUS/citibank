@@ -24,12 +24,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/purchasedVoucherDisplay.vue')
       },
       {
+        path: 'redeemedVoucherDetail/:id',
+        component: () => import('@/views/redeemedVoucherDisplay.vue')
+      },
+      {
         path: 'merchantVoucherDetail/:id',
         component: () => import('@/views/merchantVoucherDisplay.vue')
       },
       {
-        path: 'testBuy',
-        component: () => import('@/views/testBuy.vue')
+        path: 'wallet',
+        component: () => import('@/views/wallet.vue')
       }
 
     ]
