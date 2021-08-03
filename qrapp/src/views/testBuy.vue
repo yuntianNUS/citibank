@@ -12,7 +12,7 @@
         </ion-toolbar>
       </ion-header>
     
-      <TestBuyContent name="Test Buy Page" />
+      <TestBuyContent name="Test Buy HEHE" />
     </ion-content>
   </ion-page>
 </template>
