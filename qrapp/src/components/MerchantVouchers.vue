@@ -3,8 +3,8 @@
     
     <div id = "container">
         <p id = "title">Merchants</p>
-        <SearchBar></SearchBar>
-          <div v-for="item in merchantList" :key="item.id">   
+        <input class = 'input' type="text" v-model="search" placeholder="Search voucher"/>
+          <div v-for="item in filteredList" :key="item.id">   
               <router-link class="link" :to="'/tabs/merchantVoucherDetail/'+item.id">{{item.data().name}}</router-link>
               <img class="image" :src="item.data().image">
               
@@ -16,14 +16,14 @@
   
 </template>
 
-<script lang="ts">
-import SearchBar from './SearchBar.vue';
+<script lang="js">
+
 import {db} from '../main';
 import { defineComponent } from '@vue/runtime-core';
 // import { IonItem } from '@ionic/vue';
 
 export default defineComponent({
-  components: { SearchBar },
+  components: { },
   methods: {
     fetchItems: function () {
       db
@@ -32,8 +32,8 @@ export default defineComponent({
         .then((querySnapShot) => {
          
           querySnapShot.forEach((doc) => {
-            doc.data().voucherTypes.forEach((voucher: any) => {
-              voucher.get().then((snapshot: any) => { //snapshot: vouchertype
+            doc.data().voucherTypes.forEach((voucher) => {
+              voucher.get().then((snapshot) => { //snapshot: vouchertype
                 if (snapshot.data().count!=0 && this.merchantList.includes(doc) == false){
                   this.merchantList.push(doc)
 
@@ -47,10 +47,20 @@ export default defineComponent({
   },
     data() {
       return{
-          merchantList:[] as any
+          merchantList:[],
+          search:""
     
       }
     },
+    computed: {
+    filteredList() {
+      return this.merchantList.filter((post) => {
+         if(post.data().name.toLowerCase().includes(this.search.toLowerCase())){
+           return true
+         }
+      })
+    }
+  },
     mounted() {
         this.fetchItems()
     }
@@ -58,6 +68,14 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.input{
+  height: 40px;
+  width: 100%;
+  box-shadow: 5px 5px 5px rgb(169, 168, 168);
+  border-radius: 10px;
+  border-width:1px;
+
+}
 #title{
     color: #020358;
     font-size: 20px;
