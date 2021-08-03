@@ -17,7 +17,8 @@
         </ion-toolbar>
       </ion-header>
     
-      <TestBuyContent name="Test Buy Page" @addCartClicked="onClickChild"/>
+      <TestBuyContent name="Test Buy Page"/>
+      <!-- @addCartClicked="onClickChild" -->
     </ion-content>
   </ion-page>
 </template>
@@ -36,25 +37,25 @@ export default  {
     }
   },
   methods: {
-    onClickChild: function (value) {
-      this.userCartCount = value;
-    },
-    fetchItems: function () {
-      console.log('fetch items called')      
-      db.collection('user')
-        .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
-        .get()
-        .then(documentSnapshot => {
-          if (documentSnapshot.exists) {
-            this.userCartCount = documentSnapshot.data().cart.length
-            console.log('cart count badge')
-            console.log(this.userCartCount)
-          }
-        })
-    },
+    // onClickChild: function (value) {
+    //   this.userCartCount = value;
+    // },
+    // fetchItems: function () {
+    //   console.log('fetch items called')      
+    //   db.collection('user')
+    //     .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+    //     .get()
+    //     .then(documentSnapshot => {
+    //       if (documentSnapshot.exists) {
+    //         this.userCartCount = documentSnapshot.data().cart.length
+    //         console.log('cart count badge')
+    //         console.log(this.userCartCount)
+    //       }
+    //     })
+    // },
   },
   created() {
-    this.fetchItems();
+    // this.fetchItems();
   },
 };
 

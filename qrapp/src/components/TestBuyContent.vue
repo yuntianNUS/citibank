@@ -11,10 +11,10 @@
         <ion-card-title>{{voucherName}}</ion-card-title>
         <ion-card-subtitle><br>Valid {{voucherValidityDays}} days</ion-card-subtitle>
       </ion-card-header>
-      <qrcode-vue :value=voucherId :size="200" level="H" />
+      <qrcode-vue :value=userVoucherId :size="200" level="H" />
       <ion-card-content>
         Show this QR Code to <br> the staff at the counter. <br>
-        {{userWallet - voucherCost}} points left.
+        <br> Wallet Balance: ${{userWallet - voucherCost}}
       </ion-card-content>
     </ion-card>
     <ion-card v-if=errorDisplay>
@@ -25,7 +25,8 @@
       </ion-card-header>
       <ion-card-title><br><br><br>{{errorMsg}}</ion-card-title>
       <ion-card-content>
-        This voucher costs {{voucherCost}} points but <br> you currently only have {{userWallet}} points.
+        This voucher costs ${{voucherCost}} but you currently 
+        <br> only have ${{userWallet}} stored in your wallet.
       </ion-card-content>
     </ion-card>
   </div>
@@ -57,7 +58,7 @@ export default defineComponent({
       voucherName: '',
       voucherValidityDays: null,
       voucherCost: null,
-      voucherId: null,
+      voucherCount: null,
       userWallet: null,
       userCartCount: null,
     }
@@ -73,6 +74,7 @@ export default defineComponent({
             this.voucherName = documentSnapshot.data().name
             this.voucherValidityDays = documentSnapshot.data().terms.validityDays
             this.voucherCost = documentSnapshot.data().cost
+            this.voucherCount = documentSnapshot.data().count
           }
         })
       db.collection('user')
@@ -80,6 +82,8 @@ export default defineComponent({
         .get()
         .then(documentSnapshot => {
           if (documentSnapshot.exists) {
+            console.log('CART')
+            console.log(documentSnapshot.data().cart)
             this.userCartCount = documentSnapshot.data().cart.length
             console.log('cart count')
             console.log(this.userCartCount)
@@ -107,37 +111,37 @@ export default defineComponent({
           if (documentSnapshot.exists) {
             this.userWallet = documentSnapshot.data().walletBalance
 
-            console.log('### USER WALLET')
+            console.log('### USER WALLET') 
             console.log(this.userWallet)
             console.log('### USER WALLET')
 
             // check if wallet has sufficient points
+            // NOTE: cashier to check if user bought
             if (this.userWallet < this.voucherCost && this.userWallet && this.voucherCost) {
               this.errorDisplay = true;
-              this.errorMsg = 'NOT ENOUGH POINTS'
-            }
+              this.errorMsg = 'Insufficient Wallet Balance'
+            } 
             else { // sufficient points, transaction goes through
-              // create voucher instance
-              this.voucherId = db.collection('voucher').doc().id;
-              db.collection('voucher').doc(this.voucherId)
+              // create userVoucher instance
+              this.userVoucherId = db.collection('userVoucher').doc().id;
+              db.collection('userVoucher').doc(this.userVoucherId)
               .set({
-                purchased: true,
-                redeemed: false,
-                voucherType: db.doc('voucherType/' + this.voucherTypeId)
+                createdAt: new Date(),
+                userRef: db.doc('user/' + '4AGK7K5pWEtTSidHcpL3'), // HARDCODE TO CHANGE
+                voucherTypeRef: db.doc('voucherType/' + this.voucherTypeId)
               });
 
-              // update voucherType's voucherIds field
+              // update voucherType's count
               db.collection('voucherType').doc(this.voucherTypeId)
               .update({
-                voucherIds: firebase.firestore.FieldValue.arrayUnion(db.doc('voucher/' + this.voucherId)),
+                count: firebase.firestore.FieldValue.increment(- 1),
               })
 
               // user: update vouchers and wallet balance
               db.collection('user')
               .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
               .update({
-                vouchers: firebase.firestore.FieldValue.arrayUnion(db.doc('voucher/' + this.voucherId)),
-                walletBalance: (this.userWallet - this.voucherCost)
+                walletBalance: firebase.firestore.FieldValue.increment(-this.voucherCost)
               })
               this.codeDisplay = true;
             }
