@@ -30,6 +30,15 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'testBuy',
         component: () => import('@/views/testBuy.vue')
+      },
+      {
+        path: 'CashierScan',
+        component: () => import('@/views/CashierScanPage.vue')
+      },
+      {
+        path: 'CashierRedeemSuccess',
+        name: 'CashierRedeemSuccess',
+        component: () => import('@/views/CashierRedeemSuccessPage.vue')
       }
     ]
   }
