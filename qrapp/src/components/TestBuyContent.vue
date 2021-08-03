@@ -1,6 +1,7 @@
 <template>
   <div id="container">
     <strong v-if="(!codeDisplay) && (!errorDisplay)">{{ name }}</strong><br>
+    <ion-button v-if="(!codeDisplay) && (!errorDisplay)" @click="toCart">Add to Cart</ion-button>
     <ion-button v-if="(!codeDisplay) && (!errorDisplay)" @click="buyNow">Buy Now</ion-button>
     <ion-card v-if=codeDisplay>
       <ion-card-header>
@@ -12,7 +13,8 @@
       </ion-card-header>
       <qrcode-vue :value=voucherId :size="200" level="H" />
       <ion-card-content>
-        Show this QR Code to <br> the staff at the counter.
+        Show this QR Code to <br> the staff at the counter. <br>
+        {{userWallet - voucherCost}} points left.
       </ion-card-content>
     </ion-card>
     <ion-card v-if=errorDisplay>
@@ -20,14 +22,17 @@
         <ion-item>
           <ion-icon name="close-sharp" slot="end" @click="closeError"></ion-icon>
         </ion-item>
-        <ion-card-title>{{errorMsg}}</ion-card-title>
       </ion-card-header>
+      <ion-card-title><br><br><br>{{errorMsg}}</ion-card-title>
+      <ion-card-content>
+        This voucher costs {{voucherCost}} points but <br> you currently only have {{userWallet}} points.
+      </ion-card-content>
     </ion-card>
   </div>
 </template>
 
 <script>
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle} from '@ionic/vue';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, alertController} from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { db } from "@/main";
 import {warning} from 'ionicons/icons';
@@ -53,6 +58,8 @@ export default defineComponent({
       voucherValidityDays: null,
       voucherCost: null,
       voucherId: null,
+      userWallet: null,
+      userCartCount: null,
     }
   }, 
   methods: {
@@ -68,24 +75,44 @@ export default defineComponent({
             this.voucherCost = documentSnapshot.data().cost
           }
         })
-    },
-    buyNow: function () {
-      console.log('Buy Now Button Pressed')
-      // get most up to date userWallet info
-      let userWallet = null
       db.collection('user')
         .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
         .get()
         .then(documentSnapshot => {
           if (documentSnapshot.exists) {
-            userWallet = documentSnapshot.data().walletBalance
+            this.userCartCount = documentSnapshot.data().cart.length
+            console.log('cart count')
+            console.log(this.userCartCount)
+          }
+        })
+    },
+    toCart: function () {
+      // update user's cart
+      db.collection('user')
+      .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+      .update({
+        cart: firebase.firestore.FieldValue.arrayUnion(db.doc('voucherType/' + this.voucherTypeId)),
+      })
+      this.userCartCount += 1
+      this.cartConfirmationAlert()
+      this.$emit('addCartClicked', this.userCartCount)
+    },
+    buyNow: function () {
+      console.log('Buy Now Button Pressed')
+      // get most up to date userWallet info
+      db.collection('user')
+        .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+        .get()
+        .then(documentSnapshot => {
+          if (documentSnapshot.exists) {
+            this.userWallet = documentSnapshot.data().walletBalance
 
             console.log('### USER WALLET')
-            console.log(userWallet)
+            console.log(this.userWallet)
             console.log('### USER WALLET')
 
             // check if wallet has sufficient points
-            if (userWallet < this.voucherCost && userWallet && this.voucherCost) {
+            if (this.userWallet < this.voucherCost && this.userWallet && this.voucherCost) {
               this.errorDisplay = true;
               this.errorMsg = 'NOT ENOUGH POINTS'
             }
@@ -110,7 +137,7 @@ export default defineComponent({
               .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
               .update({
                 vouchers: firebase.firestore.FieldValue.arrayUnion(db.doc('voucher/' + this.voucherId)),
-                walletBalance: (userWallet - this.voucherCost)
+                walletBalance: (this.userWallet - this.voucherCost)
               })
               this.codeDisplay = true;
             }
@@ -122,7 +149,20 @@ export default defineComponent({
     },
     closeError: function () {
       this.errorDisplay = false;
-    }
+    },
+    cartConfirmationAlert: async function () {
+      console.log('Add to cart')
+      const alert = await alertController
+        .create({
+          cssClass: 'my-custom-class',
+          header: 'Added to Cart',
+          message: 'The voucher has been successfully added to the cart',
+          buttons: ['Ok'],
+        });
+      await alert.present();
+
+      const { role } = await alert.onDidDismiss();
+    },
   },
   created() {
     this.fetchItems();
