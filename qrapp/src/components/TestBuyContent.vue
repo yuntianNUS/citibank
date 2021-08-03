@@ -2,7 +2,7 @@
   <div id="container">
     <strong v-if="(!codeDisplay) && (!errorDisplay)">{{ name }}</strong><br>
     <ion-button v-if="(!codeDisplay) && (!errorDisplay)" @click="toCart">Add to Cart</ion-button>
-    <ion-button v-if="(!codeDisplay) && (!errorDisplay)" @click="buyNow">Buy Now</ion-button>
+    <ion-button v-if="(!codeDisplay) && (!errorDisplay)" @click="alertBuyMethod">Buy Now</ion-button>
     <ion-card v-if=codeDisplay>
       <ion-card-header>
         <ion-item>
@@ -14,7 +14,7 @@
       <qrcode-vue :value=userVoucherId :size="200" level="H" />
       <ion-card-content>
         Show this QR Code to <br> the staff at the counter. <br>
-        <br> Wallet Balance: ${{userWallet - voucherCost}}
+        <br> Wallet Balance: {{walletBalanceMsg}}
       </ion-card-content>
     </ion-card>
     <ion-card v-if=errorDisplay>
@@ -25,8 +25,7 @@
       </ion-card-header>
       <ion-card-title><br><br><br>{{errorMsg}}</ion-card-title>
       <ion-card-content>
-        This voucher costs ${{voucherCost}} but you currently 
-        <br> only have ${{userWallet}} stored in your wallet.
+        {{errorMsgLong}}
       </ion-card-content>
     </ion-card>
   </div>
@@ -54,13 +53,17 @@ export default defineComponent({
       codeDisplay: false,
       errorDisplay: false,
       errorMsg: '',
+      errorMsgLong: '',
       voucherTypeId: 'IeFsdsKI61bSXrr4106Z', // HARDCODE TO CHANGE
       voucherName: '',
       voucherValidityDays: null,
       voucherCost: null,
+      voucherCostDollar: null,
+      voucherCostPoints: null,
       voucherCount: null,
       userWallet: null,
       userCartCount: null,
+      walletBalanceMsg: '',
     }
   }, 
   methods: {
@@ -73,7 +76,8 @@ export default defineComponent({
           if (documentSnapshot.exists) {
             this.voucherName = documentSnapshot.data().name
             this.voucherValidityDays = documentSnapshot.data().terms.validityDays
-            this.voucherCost = documentSnapshot.data().cost
+            this.voucherCostDollar = documentSnapshot.data().costDollar
+            this.voucherCostPoints = documentSnapshot.data().costPoints
             this.voucherCount = documentSnapshot.data().count
           }
         })
@@ -82,11 +86,7 @@ export default defineComponent({
         .get()
         .then(documentSnapshot => {
           if (documentSnapshot.exists) {
-            console.log('CART')
-            console.log(documentSnapshot.data().cart)
             this.userCartCount = documentSnapshot.data().cart.length
-            console.log('cart count')
-            console.log(this.userCartCount)
           }
         })
     },
@@ -101,52 +101,74 @@ export default defineComponent({
       this.cartConfirmationAlert()
       this.$emit('addCartClicked', this.userCartCount)
     },
-    buyNow: function () {
-      console.log('Buy Now Button Pressed')
-      // get most up to date userWallet info
-      db.collection('user')
-        .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
-        .get()
-        .then(documentSnapshot => {
-          if (documentSnapshot.exists) {
-            this.userWallet = documentSnapshot.data().walletBalance
+    buyNowDisplay: function (purchaseMethod) {
+      // check if wallet has sufficient points & sufficient quantity
+      // NOTE: cashier to check if user bought
+      console.log('###')
+      console.log(purchaseMethod)
+      console.log('###')
 
-            console.log('### USER WALLET') 
-            console.log(this.userWallet)
-            console.log('### USER WALLET')
+      console.log('#Wallet#')
+      console.log(this.userWallet)
+      console.log('#Wallet#')
+      
+      console.log('#Voucher Cost#')
+      console.log(this.voucherCost)
+      console.log('#VoucherCost#')
+      if (this.voucherCount <= 0) {
+        this.codeDisplay = false;
+        this.errorDisplay = true;
+        this.errorMsg = 'Sold Out'
+        this.errorMsgLong = 'This voucher has been fully purchased! Do check out the other vouchers available instead.'
+      } else if (this.userWallet < this.voucherCost) {
+        this.codeDisplay = false;
+        this.errorDisplay = true;
+        this.errorMsg = 'Insufficient Wallet Balance'
+        if (purchaseMethod == '$') {
+          this.errorMsgLong = 'This voucher costs $' + this.voucherCost + 
+        ' but you currently only have $' + this.userWallet + ' stored in your wallet.'
+        } else if (purchaseMethod == 'points') {
+          this.errorMsgLong = 'This voucher costs ' + this.voucherCost + 
+        ' points but you currently only have ' + this.userWallet + ' points.'
+        }
+      } else { // sufficient points/cash, transaction goes through
+        // create userVoucher instance
+        this.userVoucherId = db.collection('userVoucher').doc().id;
+        db.collection('userVoucher').doc(this.userVoucherId)
+        .set({
+          createdAt: new Date(),
+          userRef: db.doc('user/' + '4AGK7K5pWEtTSidHcpL3'), // HARDCODE TO CHANGE
+          voucherTypeRef: db.doc('voucherType/' + this.voucherTypeId),
+          paymentType: purchaseMethod
+        });
 
-            // check if wallet has sufficient points
-            // NOTE: cashier to check if user bought
-            if (this.userWallet < this.voucherCost && this.userWallet && this.voucherCost) {
-              this.errorDisplay = true;
-              this.errorMsg = 'Insufficient Wallet Balance'
-            } 
-            else { // sufficient points, transaction goes through
-              // create userVoucher instance
-              this.userVoucherId = db.collection('userVoucher').doc().id;
-              db.collection('userVoucher').doc(this.userVoucherId)
-              .set({
-                createdAt: new Date(),
-                userRef: db.doc('user/' + '4AGK7K5pWEtTSidHcpL3'), // HARDCODE TO CHANGE
-                voucherTypeRef: db.doc('voucherType/' + this.voucherTypeId)
-              });
-
-              // update voucherType's count
-              db.collection('voucherType').doc(this.voucherTypeId)
-              .update({
-                count: firebase.firestore.FieldValue.increment(- 1),
-              })
-
-              // user: update vouchers and wallet balance
-              db.collection('user')
-              .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
-              .update({
-                walletBalance: firebase.firestore.FieldValue.increment(-this.voucherCost)
-              })
-              this.codeDisplay = true;
-            }
-          }
+        // update voucherType's count
+        db.collection('voucherType').doc(this.voucherTypeId)
+        .update({
+          count: firebase.firestore.FieldValue.increment(- 1),
         })
+
+        // user: update vouchers and wallet balance
+        if (purchaseMethod == '$') {
+          db.collection('user')
+          .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+          .update({
+            walletBalanceDollar: firebase.firestore.FieldValue.increment(-this.voucherCost)
+          })
+          this.walletBalanceMsg = '$' + (this.userWallet - this.voucherCost)
+        } else if (purchaseMethod == 'points') {
+          db.collection('user')
+          .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+          .update({
+            walletBalancePoints: firebase.firestore.FieldValue.increment(-this.voucherCost)
+          })
+          this.walletBalanceMsg = (this.userWallet - this.voucherCost) + ' points'
+        }
+        this.codeDisplay = true;
+      }
+
+      console.log('%%% Display')
+      console.log(this.codeDisplay)
     },
     closeCode: function () {
       this.codeDisplay = false;
@@ -166,6 +188,53 @@ export default defineComponent({
       await alert.present();
 
       const { role } = await alert.onDidDismiss();
+    },
+    async alertBuyMethod() {
+      const alert = await alertController
+        .create({
+          cssClass: 'my-custom-class',
+          header: 'Purchase Options',
+          //subHeader: 'Subtitle',
+          //message: 'This is an alert message.',
+          buttons: [
+            {
+              text: 'Cash',
+              handler: () => {
+                console.log('Cash Chosen')
+                db.collection('user')
+                .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+                .get()
+                .then(documentSnapshot => {
+                  if (documentSnapshot.exists) {
+                    this.userWallet = documentSnapshot.data().walletBalanceDollar
+                    this.voucherCost = this.voucherCostDollar
+                    this.buyNowDisplay('$')
+                  }
+                })
+              }
+            }, 
+            {
+              text: 'Points',
+              handler: () => {
+                console.log('Points Chosen')
+                db.collection('user')
+                .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+                .get()
+                .then(documentSnapshot => {
+                  if (documentSnapshot.exists) {
+                    this.userWallet = documentSnapshot.data().walletBalancePoints
+                    this.voucherCost = this.voucherCostPoints
+                    this.buyNowDisplay('points')
+                    console.log('CHECK')
+                    console.log(this.userWallet)
+                    console.log('CHECK')
+                  }
+                })
+              }
+            }
+          ],
+        });
+      return alert.present();
     },
   },
   created() {
