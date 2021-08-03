@@ -10,15 +10,16 @@
       <ion-header collapse="condense">
         <ion-toolbar>        
           <ion-title size="large">Test Buy</ion-title>
-          <ion-subtitle class="material-icons" slot="end">
-            shopping_cart
-          </ion-subtitle>
+          <router-link style="text-decoration: none; color: inherit;" to="cart" exact>
+            <ion-subtitle class="material-icons" slot="end">
+              shopping_cart
+            </ion-subtitle>
+          </router-link>
           <ion-badge id="notifications-badge" slot="end" @add-cart-clicked='updateCart'>{{userCartCount}}</ion-badge>
         </ion-toolbar>
       </ion-header>
     
       <TestBuyContent name="Test Buy Page"/>
-      <!-- @addCartClicked="onClickChild" -->
     </ion-content>
   </ion-page>
 </template>
@@ -55,10 +56,6 @@ export default  {
 </script>
 
 <style scoped>
-ion-page {
-  --background: red
-}
-
 .material-icons {
   float: right;
   bottom: 2px;

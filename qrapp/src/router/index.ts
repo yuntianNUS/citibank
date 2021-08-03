@@ -29,7 +29,11 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'testBuy',
-        component: () => import('@/views/testBuy.vue')
+        component: () => import('@/views/TestBuy.vue')
+      },
+      {
+        path: 'cart',
+        component: () => import('@/views/Cart.vue')
       }
     ]
   }
