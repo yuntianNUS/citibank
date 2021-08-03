@@ -13,7 +13,7 @@
           <ion-subtitle class="material-icons" slot="end">
             shopping_cart
           </ion-subtitle>
-          <ion-badge id="notifications-badge" slot="end">{{userCartCount}}</ion-badge>
+          <ion-badge id="notifications-badge" slot="end" @add-cart-clicked='updateCart'>{{userCartCount}}</ion-badge>
         </ion-toolbar>
       </ion-header>
     
@@ -23,7 +23,7 @@
   </ion-page>
 </template>
 
-<script lang="ts">
+<script>
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent} from '@ionic/vue';
 import TestBuyContent from '../components/TestBuyContent.vue';
 import { db } from "@/main";
@@ -37,25 +37,18 @@ export default  {
     }
   },
   methods: {
-    // onClickChild: function (value) {
-    //   this.userCartCount = value;
-    // },
-    // fetchItems: function () {
-    //   console.log('fetch items called')      
-    //   db.collection('user')
-    //     .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
-    //     .get()
-    //     .then(documentSnapshot => {
-    //       if (documentSnapshot.exists) {
-    //         this.userCartCount = documentSnapshot.data().cart.length
-    //         console.log('cart count badge')
-    //         console.log(this.userCartCount)
-    //       }
-    //     })
-    // },
+    fetchItems: function () {
+      db.collection('user')
+      .doc('4AGK7K5pWEtTSidHcpL3')
+      .get().then(snapshot => {
+        if (snapshot.exists) {
+          this.userCartCount = snapshot.data().cart.length
+        }
+      })
+    },
   },
   created() {
-    // this.fetchItems();
+    this.fetchItems();
   },
 };
 
