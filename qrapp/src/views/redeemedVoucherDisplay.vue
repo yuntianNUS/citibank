@@ -10,6 +10,7 @@
       <ion-header collapse="condense">
         <ion-toolbar>
           <div class='ion-page'>
+          <ion-icon  id="back" v-on:click="back()" size="medium" name="chevron-back"></ion-icon>
           <ion-title size="medium">{{merchantName}}</ion-title>
           </div>
         </ion-toolbar>
@@ -22,14 +23,14 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon} from '@ionic/vue';
 import redeemedVoucherDetail from '../components/redeemedVoucherDetail.vue';
 import {db} from '../main';
 import { defineComponent } from '@vue/runtime-core';
 
 export default defineComponent({
   name: 'Tab2',
-  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, redeemedVoucherDetail},
+  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, redeemedVoucherDetail, IonIcon},
   data() {
     return{
       merchantName: "",
@@ -45,7 +46,8 @@ export default defineComponent({
       validityOutlets:[] as any,
       expiresOn: {},
       image:"",
-      redeemedDate:""
+      redeemedDate:"",
+      backroute:this.$router
     }
   },
   methods: {
@@ -75,7 +77,7 @@ export default defineComponent({
                   
                   this.validityDays = snapshot2.data().terms.validityDays
                   this.validityItems = snapshot2.data().terms.validityItems
-                  this.validityOutlets = snapshot2.data().terms.validityOutlets
+                  this.validityOutlets = "This voucher is applicable at the following outlets: " +snapshot2.data().terms.validityOutlets
                   const date = doc.data().createdAt.toDate()
                   date.setDate(date.getDate() + this.validityDays)
                   this.expiresOn = this.formatDate(date)
@@ -89,6 +91,9 @@ export default defineComponent({
           })
         })
 
+  },
+  back:function(){
+      this.backroute.go(-1);
   },
   formatDate: function(date: any) {
       const d = new Date(date)
@@ -111,3 +116,9 @@ export default defineComponent({
   }
 })
 </script>
+<style>
+#back{
+  margin-top:4%;
+
+}
+</style>
