@@ -130,6 +130,8 @@ export default  {
       this.pause()
       await this.timeout(500)
       this.unpause()
+      this.checkIsOurApplicationVoucher()
+      this.checkIsOurApplicationVoucher()
       this.retrieveUniqueVoucherDetails()
       this.redeemVoucher()
       
