@@ -1,6 +1,4 @@
 <template>
-  <firebase></firebase>
-  <db></db>
   <ion-page>
     <ion-header>
       <ion-toolbar>
@@ -50,7 +48,7 @@ import {
 } from "@ionic/vue";
 import ExploreContainer from "@/components/ExploreContainer.vue";
 import { db } from "@/main";
-import firebase from "firebase";
+// import firebase from "firebase";
 
 export default {
   name: "CashierRedeemSuccess",
@@ -61,8 +59,6 @@ export default {
     IonTitle,
     IonContent,
     IonPage,
-    db,
-    firebase,
   },
   data() {
     return {
