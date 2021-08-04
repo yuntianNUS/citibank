@@ -1,4 +1,5 @@
 <template>
+<div>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <ion-page>
     <ion-header>
@@ -9,11 +10,11 @@
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>        
-          <router-link style="text-decoration: none; color: inherit;" to="/" exact>
-            <ion-subtitle class="material-icons" slot="start">
+
+            <ion-subtitle class="material-icons" slot="start" v-on:click='back()'>
               arrow_back_ios
             </ion-subtitle>
-          </router-link>
+
           <ion-title size="large">Cart</ion-title>
         </ion-toolbar>
         <ion-list>
@@ -23,7 +24,7 @@
             </ion-thumbnail>
             <ion-label>
               <h2>{{item.title}}</h2>
-              <p>${{item.dollar}} or {{item.points}} points</p>
+              <p>${{item.dollar * item.quantity}} or {{item.points * item.quantity}} points</p>
               <p>Quanitity: {{item.quantity}}</p>
               <ul>
                 <button @click="editCart(index, -1)" :disabled="item.quantity == 0"><li class="material-icons" id="decrease">
@@ -45,6 +46,7 @@
       <ion-button id='checkoutButton' @click="checkout">Check Out</ion-button>
     </ion-content>
   </ion-page>
+  </div>
 </template>
 
 <script>
@@ -63,9 +65,13 @@ export default  {
       userWallet: null,
       totalCost: null,
       walletErrorMsg: "",
+      backroute: this.$router
     }
   },
   methods: {
+    back:function(){
+      this.backroute.go(-1);
+  },
     fetchItems: function() {
       let cart = []
       const refList = []
@@ -98,8 +104,8 @@ export default  {
                         title: title,
                         img: img,
                         quantity: qty,
-                        dollar: dollar * qty,
-                        points: points * qty,
+                        dollar: dollar,
+                        points: points,
                       }
                     } else {
                       this.cartList.push({
@@ -294,6 +300,8 @@ export default  {
     },
     editCart: async function (index, change) {
       this.cartList[index].quantity += change
+      this.totalDollar += change * this.cartList[index].dollar
+      this.totalPoints += change * this.cartList[index].points
       // update database
       if (change > 0) {
         await db.collection('user').doc('4AGK7K5pWEtTSidHcpL3') //HARDCODE TO CHANGE
@@ -304,7 +312,7 @@ export default  {
             radomNum: Math.random(),
           }) 
         }).then(() => {
-          this.$router.go();
+          // this.$router.go();
         })
       } else { // delete item by iterating through to find the first instance
         let itemToDelete = null
@@ -324,7 +332,7 @@ export default  {
             db.collection('user').doc('4AGK7K5pWEtTSidHcpL3').update({
               cart: firebase.firestore.FieldValue.arrayRemove(itemToDelete)
             }).then(() => {
-              this.$router.go();
+              // this.$router.go();
             })
           }
         })

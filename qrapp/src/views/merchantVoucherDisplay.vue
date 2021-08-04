@@ -1,4 +1,5 @@
 <template>
+<div>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <ion-page>
     <ion-header>
@@ -11,7 +12,9 @@
         <ion-toolbar>
           <ion-icon  id="back" v-on:click="back()" size="large" name="chevron-back"></ion-icon>        
           <ion-title size="large">{{merchantName}}</ion-title>
-          <router-link style="text-decoration: none; color: inherit;" to="cart" exact>
+
+
+          <router-link style="text-decoration: none; color: inherit;" to="/tabs/cart" exact>
             <ion-subtitle class="material-icons" slot="end">
               shopping_cart
             </ion-subtitle>
@@ -24,7 +27,7 @@
     </ion-content> 
   </ion-page>
 
-
+</div>
 </template>
 
 <script>

@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'testBuy',
-        component: () => import('@/views/TestBuy.vue')
+        component: () => import('@/views/testBuy.vue')
       },
       {
         path: 'cart',
@@ -50,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'profile',
         component: () => import('@/views/profile.vue')
-      },
+      }
     ]
   }
 ]

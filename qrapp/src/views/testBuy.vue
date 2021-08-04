@@ -1,4 +1,5 @@
 <template>
+<div>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <ion-page>
     <ion-header>
@@ -22,6 +23,7 @@
       <TestBuyContent name="Test Buy Page"/>
     </ion-content>
   </ion-page>
+  </div>
 </template>
 
 <script>
