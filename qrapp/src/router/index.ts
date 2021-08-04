@@ -5,11 +5,31 @@ import Tabs from '../views/Tabs.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/tabs/home'
+    redirect: '/landing'
   },
   {
-    path: '/login',
-    component: () => import('@/views/login.vue')
+    path: '/landing',
+    component: () => import('@/views/Landing.vue')
+  },
+  {
+    path: '/registration',
+    component: () => import('@/views/Registration.vue')
+  },
+  {
+    path: '/signin',
+    component: () => import('@/views/SignIn.vue')
+  },
+  {
+    path: '/cashier',
+    component: () => import('@/views/LandingCashier.vue')
+  },
+  {
+    path: '/cashier/registration',
+    component: () => import('@/views/RegistrationCashier.vue')
+  },
+  {
+    path: '/cashier/signin',
+    component: () => import('@/views/SignInCashier.vue')
   },
   {
     path: '/tabs/',

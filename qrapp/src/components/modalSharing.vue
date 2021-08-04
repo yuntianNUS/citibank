@@ -2,7 +2,7 @@
 <div>
   <ion-header>
     <ion-toolbar>
-      <ion-title>Share this voucher!</ion-title>
+      <ion-title>Share</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content :fullscreen="true">
@@ -24,7 +24,7 @@
     <a class="fa fa-instagram fa-3x" @click="presentAlert"></a>
     <a class="fa fa-pinterest-square fa-3x" @click="presentAlert"></a>
 
-    <button  id= "modal" @click="closeModal">Close Modal</button>
+    <button  id= "modal" @click="closeModal">Close</button>
   </ion-content>
   </div>
 </template>

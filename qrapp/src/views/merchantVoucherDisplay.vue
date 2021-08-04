@@ -14,7 +14,7 @@
           <ion-title size="large">{{merchantName}}</ion-title>
 
 
-          <router-link style="text-decoration: none; color: inherit;" to="/tabs/cart" exact>
+          <router-link style="text-decoration: none; color: inherit;" :to="'/tabs/cart'" exact>
             <ion-subtitle class="material-icons" slot="end">
               shopping_cart
             </ion-subtitle>

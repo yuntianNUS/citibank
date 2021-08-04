@@ -9,6 +9,11 @@ const firebaseConfig = {
   appId: "1:406392240795:web:42075de140490e282e643e",
   measurementId: "G-S7QQ263CLG"
 };
-firebase.initializeApp(firebaseConfig);
-export const database = firebase.firestore();
-// export const auth = firebase.auth();
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+} else {
+  firebase.app(); // if already initialized, use that one
+}
+// firebase.initializeApp(firebaseConfig);
+// export const database = firebase.firestore();
+export const auth = firebase.auth();
