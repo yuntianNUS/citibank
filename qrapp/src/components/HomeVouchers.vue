@@ -130,7 +130,7 @@ export default defineComponent({
     padding-right:5%;
 }
 .scroll{
-
+    margin-top:5%;
     white-space:nowrap;
     overflow-x:scroll;
 }

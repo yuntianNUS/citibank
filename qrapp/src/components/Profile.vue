@@ -47,6 +47,7 @@ name:'Profile',
                       this.email = doc.data().email
                       this.image = doc.data().image
                       console.log(doc.data().email)
+
                   }
               })
           })
