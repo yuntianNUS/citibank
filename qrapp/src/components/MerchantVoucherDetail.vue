@@ -25,6 +25,7 @@
         </div>
         <div class = "button">
         <button> Use Now </button>
+        
         </div>
 
     </div> 
@@ -94,6 +95,7 @@ data() {
       validityItems:"",
       validityOutlets:null,
       route: this.$route.params.id,
+      
     }
 },
 mounted(){

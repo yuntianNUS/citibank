@@ -7,13 +7,15 @@
           <div class="scroll">
           
           <div class = "box" v-for="item in filteredList" :key="item[0].id">   
+              <p class = "expire"> {{item[3]}} </p>
               <img class="image" :src="item[1].data().image">
               <p class="text">
               <router-link class ="link" :to="'/tabs/purchasedVoucherDetail/' + item[0].id">
               {{item[1].data().name}}<br>
               </router-link>
               </p>
-              <p class="name"> {{item[2].data().name}} </p>
+              <p class="name"> {{item[2].data().name}}</p>
+
               
           </div>
      
@@ -49,15 +51,48 @@ export default defineComponent({
                     const date = doc.data().createdAt.toDate()
                     date.setDate(date.getDate()+snapshot2.data().terms.validityDays)
                     if(date > new Date()){
-                      this.voucherList.push([doc, snapshot2, snapshot3])
+
+                      const soon = new Date()
+                      soon.setDate(soon.getDate()+7)
+                      if(date <= soon){
+                          this.voucherList.push([doc, snapshot2, snapshot3,"EXPIRING",date])
+                      }
+                      else{
+                        
+                        this.voucherList.push([doc, snapshot2, snapshot3,"",date])
+                      }
+                      
+                      console.log('FETCH ITEMS')
                     }
-                    console.log(this.voucherList)
                   })
                 })
+                // console.log('FETCH ITEMS')
+                console.log(this.voucherList)
+                // this.voucherList = this.sortList(this.voucherList)
               }
+              this.sortedList = this.sortList(this.voucherList)
             })
           })
         })
+    },
+    formatDate: function(date) {
+      const d = new Date(date)
+      let month = '' + (d.getMonth() + 1);
+      let day = '' + d.getDate();
+      const year = d.getFullYear();
+
+      if (month.length < 2) {
+          month = '0' + month;
+      }
+      if (day.length < 2) {
+          day = '0' + day;
+      }
+
+      return [year, month, day].join('-');
+    },
+    sortList: function(list){
+      console.log('SORT')
+      this.sortedList= list.sort(function(a,b){return a[4]<b[4];});
     }
   },
   computed: {
@@ -74,12 +109,13 @@ export default defineComponent({
       return{
           voucherList:[],
           search:"",
-          value: null
+          value: null,
+          sortedList:[]
     
       }
     },
     mounted() {
-        this.fetchItems()
+      this.fetchItems()
     }
 })
 </script>
@@ -101,6 +137,7 @@ export default defineComponent({
 }
 
 .box{
+    position:relative;
     width:200px;
     height:150px;
     margin:10px;
@@ -141,6 +178,16 @@ export default defineComponent({
   border-radius: 10px;
   border-width:1px;
 
+}
+.expire{
+  position:absolute;
+  background-color: red;
+  color:white;
+  font-weight:bold;
+  border-radius:15px;
+  width:45%;
+  text-align: center;
+  margin-left: 5%;
 }
 
 </style>

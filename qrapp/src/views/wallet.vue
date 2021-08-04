@@ -9,7 +9,7 @@
     <ion-content :fullscreen="true">
 
       <ion-header collapse="condense">
-        <ion-toolbar color="primary">
+        <ion-toolbar>
           <ion-title size="medium" align='center' id= 'header'> Your Wallet <br> </ion-title>
         </ion-toolbar>
       </ion-header>
@@ -94,6 +94,7 @@ export default defineComponent({
 
 .text{
   font-size: 40px;
+  font-weight:bold;
 }
 .smalltext{
   margin-top:-20%;

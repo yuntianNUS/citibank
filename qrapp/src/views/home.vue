@@ -9,7 +9,7 @@
     <ion-content :fullscreen="true">
 
       <ion-header collapse="condense">
-        <ion-toolbar color="primary">
+        <ion-toolbar>
           <ion-title size="medium" align='center' id= 'header'>Home</ion-title>
         </ion-toolbar>
       </ion-header>

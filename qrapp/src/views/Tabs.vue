@@ -13,7 +13,7 @@
           <ion-label>Wallet</ion-label>
         </ion-tab-button>
         
-        <ion-tab-button tab="tab3" href="/tabs/tab3">
+        <ion-tab-button tab="tab3" href="/tabs/profile">
           <ion-icon :icon="square" />
           <ion-label>Profile</ion-label>
         </ion-tab-button>

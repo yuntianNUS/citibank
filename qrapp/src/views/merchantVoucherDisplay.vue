@@ -10,32 +10,38 @@
       <ion-header collapse="condense">
         <ion-toolbar>
           <div class='ion-page'>
-          <ion-title size="medium">{{merchantName}}</ion-title>
+          <ion-icon  id="back" v-on:click="back()" size="medium" name="chevron-back"></ion-icon>
+          <ion-title size="medium"> {{merchantName}}</ion-title>
+          
           </div>
         </ion-toolbar>
       </ion-header>
+      
       <MerchantVoucherDetail :voucherListProp="this.voucherList" :merchantProp="this.merchant"></MerchantVoucherDetail>
     </ion-content>
     
+    
   </ion-page>
+
 
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon} from '@ionic/vue';
 import MerchantVoucherDetail from '../components/MerchantVoucherDetail.vue';
 import {db} from '../main';
 import { defineComponent } from '@vue/runtime-core';
 
 export default defineComponent({
   name: 'Tab2',
-  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, MerchantVoucherDetail},
+  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, MerchantVoucherDetail, IonIcon},
   data() {
     return{
       merchantName: "",
       merchantId: this.$route.params.id,
       voucherList: [] as any,
-      merchant:{}
+      merchant:{},
+      backroute:this.$router
     }
   },
   methods: {
@@ -64,6 +70,9 @@ export default defineComponent({
           })
         })
 
+  },
+back:function(){
+      this.backroute.go(-1);
   }
   },
   mounted(){
@@ -71,3 +80,12 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+#back{
+  margin-top:4%;
+
+}
+</style>
+
+

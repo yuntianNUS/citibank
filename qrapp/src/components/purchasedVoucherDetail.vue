@@ -14,7 +14,7 @@
         <p> <img id = 'icon' src='../assets/stackable.png'>  {{termsStackableProp}}</p> 
         <p> <img id = 'icon' src='../assets/calendar.jpeg'>  This voucher is valid for {{validityDaysProp}} days. Expiring on {{expiresOnProp}}.</p> 
         <p> <img id = 'icon' src='../assets/menuitems.png'>  This voucher is valid for the following items: {{validityItemsProp}}</p> 
-        <p> <img id = 'icon' src='../assets/location.png'> This voucher is applicable at the following outlets: {{validityOutletsProp}}</p> 
+        <p> <img id = 'icon' src='../assets/location.png'> {{validityOutletsProp}}</p> 
         </div>
         </div>
         <div class = "button">
