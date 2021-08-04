@@ -17,15 +17,8 @@
           <ion-icon :icon="square" />
           <ion-label>Profile</ion-label>
           </ion-tab-button>
-        <ion-tab-button tab="testBuy" href="/tabs/testBuy">
-          <ion-icon :icon="square" />
-          <ion-label>Buy</ion-label>
-        </ion-tab-button>
-        
-        <ion-tab-button tab="CashierScan" href="/tabs/CashierScan">
-          <ion-icon :icon="qr-scanner"/>
-          <ion-label>Scan</ion-label>
-        </ion-tab-button>
+
+
       </ion-tab-bar>
     </ion-tabs>
   </ion-page>
