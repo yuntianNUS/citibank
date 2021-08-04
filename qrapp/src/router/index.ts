@@ -56,10 +56,6 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/redeemedVoucherDisplay.vue')
       },
       {
-        path: 'testBuy',
-        component: () => import('@/views/testBuy.vue')
-      },
-      {
         path: 'cart',
         component: () => import('@/views/Cart.vue')
       },

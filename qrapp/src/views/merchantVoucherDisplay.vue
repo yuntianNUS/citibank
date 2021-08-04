@@ -76,7 +76,7 @@ export default defineComponent({
     
     // User Cart's fetch items
     db.collection('user')
-      .doc('4AGK7K5pWEtTSidHcpL3')
+      .doc('sabrina@gmail.com')
       .get().then(snapshot => {
         if (snapshot.exists) {
           this.userCartCount = snapshot.data().cart.length
