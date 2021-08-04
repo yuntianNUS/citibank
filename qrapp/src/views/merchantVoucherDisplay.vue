@@ -32,6 +32,7 @@ import MerchantVoucherDetail from '../components/MerchantVoucherDetail.vue';
 import {db} from '../main';
 import { defineComponent } from '@vue/runtime-core';
 
+
 export default defineComponent({
   name: 'Tab2',
   components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, MerchantVoucherDetail, IonIcon},
@@ -44,6 +45,7 @@ export default defineComponent({
       backroute:this.$router
     }
   },
+
   methods: {
     fetchItems: function () {
       db

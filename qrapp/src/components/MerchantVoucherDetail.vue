@@ -25,7 +25,7 @@
         </div>
         <div class = "button">
         <button> Use Now </button>
-        
+        <ion-button @click="openModal">Open Modal</ion-button>
         </div>
 
     </div> 
@@ -36,15 +36,26 @@
 <script lang="js">
 import { defineComponent } from '@vue/runtime-core';
 // import { routeLocationKey } from 'vue-router';
-
+import {IonButton,modalController} from '@ionic/vue';
+import modalSharing from "../components/modalSharing.vue";
 
 
 export default defineComponent({
-  components: {},
+  components: {IonButton},
   props: {
     voucherListProp: {},
     merchantProp: {}
 },
+setup() {
+    const openModal = async () => {
+      const modal = await modalController.create({
+        component: modalSharing, //Modal is name of the component to render inside ionic modal
+      });
+      return modal.present();
+    };
+
+    return { openModal };
+  },
 methods:{
     display: function (item){
         console.log('DISPLAY')
@@ -94,7 +105,7 @@ data() {
       validityDays: null,
       validityItems:"",
       validityOutlets:null,
-      route: this.$route.params.id,
+      route: this.$route.params.id
       
     }
 },

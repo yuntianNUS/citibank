@@ -39,7 +39,6 @@ const routes: Array<RouteRecordRaw> = [
         path: 'profile',
         component: () => import('@/views/profile.vue')
       }
-
     ]
   }
 ]
