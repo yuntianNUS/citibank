@@ -31,7 +31,7 @@ export default  {
       auth.signInWithEmailAndPassword('_cashier_' + this.email, this.password)
       .then(() => {
         console.log('cashier sign in')
-        //this.$router.push(""); // TO ADD CASHIER ROUTER
+        this.$router.push("/tabs/cashier/"); // TO ADD CASHIER ROUTER
       })
       .catch(error => {
         this.authErrorAlert(error.message);

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import Tabs from '../views/Tabs.vue'
+import TabsCashier from '../views/TabsCashier.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -31,10 +32,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/cashier/signin',
     component: () => import('@/views/SignInCashier.vue')
   },
-  {
-    path: '/cashier/scannedVouchers',
-    component: () => import('@/views/ScannedVouchers.vue')
-  },
+
   {
     path: '/tabs/',
     component: Tabs,
@@ -87,7 +85,41 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/CashierRedeemSuccessPage.vue')
       }
     ]
+  },
+  {
+    path: '/tabs/cashier',
+    component: TabsCashier,
+    children: [
+      {
+        path: '',
+        redirect: '/tabs/cashier/profile'
+      },
+      {
+        path: 'profile',
+        component: () => import('@/views/cashierProfile.vue')
+      },
+      // {
+      //   path: 'testBuy',
+      //   name: 'testBuy',
+      //   component: () => import('@/views/testBuy.vue')
+      // },
+      {
+        path: 'CashierScan',
+        name: 'CashierScan',
+        component: () => import('@/views/CashierScanPage.vue')
+      },
+      {
+        path: 'CashierRedeemSuccess/:passedVoucherId',
+        name: 'CashierRedeemSuccess',
+        component: () => import('@/views/CashierRedeemSuccessPage.vue')
+      },
+      {
+        path: 'scannedVouchers',
+        component: () => import('@/views/ScannedVouchers.vue')
+      }
+    ]
   }
+
 ]
 
 const router = createRouter({

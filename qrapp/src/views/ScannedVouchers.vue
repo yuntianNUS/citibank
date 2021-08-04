@@ -19,12 +19,13 @@
         </ion-toolbar>
         <ion-list>
           <ion-item v-for="(item, index) in redeemedList" :key="index">
-            <!-- <ion-thumbnail slot="start">
+            <ion-thumbnail slot="start">
               <img class="image" :src="item.img">
-            </ion-thumbnail> -->
+            </ion-thumbnail>
             <ion-label>
-              <h2>{{item.voucherTypeId}}</h2>
-              <p>${{item.redeemDate}}</p>
+              <h2>{{item.redeemName}}</h2>
+              <p>Redeemed Value: {{item.redeemValueText}}</p>
+              <p>Redeemed on: {{item.redeemDate}}</p>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -37,7 +38,6 @@
 <script>
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent} from '@ionic/vue';
 import { db } from "@/main";
-
 export default  {
   name: 'Cart',
   components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage},
@@ -56,24 +56,53 @@ export default  {
       db.collection('userVoucher').get()
         .then((querySnapShot) => {
          querySnapShot.forEach((doc) => {
-           console.log('here')
            if (doc.data().cashierRef) {
             const cashierId = doc.data().cashierRef.id
             if (cashierId == 'natalie@gmail.com') {
-              const redeemDate = doc.data().redeemedAt
-              const voucherTypeId = doc.data().voucherTypeRef.id
-              this.redeemedList.push((voucherTypeId, redeemDate))
+              const redeemDate = this.formatDate(doc.data().redeemedAt.toDate())
+              doc.data().voucherTypeRef.get().then((snapshot) => {
+                const redeemValueType = snapshot.data().valueType
+                const redeemValue = snapshot.data().value
+                const redeemName = snapshot.data().name
+                const image = snapshot.data().image
+                let redeemValueText = ""
+                if (redeemValueType == "$") {
+                  redeemValueText = "$" + redeemValue
+                } else {
+                  redeemValueText = redeemValue + ' %'
+                }
+                this.redeemedList.push({
+                  redeemName: redeemName,
+                  redeemValueText: redeemValueText,
+                  redeemDate: redeemDate,
+                  img: image,
+                })
+              })
             }
            }
          })
       })
     },
+    formatDate: function(date) {
+      const d = new Date(date)
+      let month = '' + (d.getMonth() + 1);
+      let day = '' + d.getDate();
+      const year = d.getFullYear();
+
+      if (month.length < 2) {
+          month = '0' + month;
+      }
+      if (day.length < 2) {
+          day = '0' + day;
+      }
+
+      return [year, month, day].join('-');
+    }
   },
   created() {
     this.fetchItems();
   },
 };
-
 </script>
 
 <style scoped>

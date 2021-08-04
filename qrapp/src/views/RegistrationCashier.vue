@@ -36,7 +36,7 @@ export default  {
         name: this.name,
         image:"https://www.pngitem.com/pimgs/m/80-802775_transparent-background-user-png-png-download.png"
       }).then(() => {
-        //this.$router.push("") // TO ADD CASHIER ROUTER
+        this.$router.push("/tabs/cashier/") // TO ADD CASHIER ROUTER
       })
     }
   },
