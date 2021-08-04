@@ -22,7 +22,7 @@
     "firebase": "^8.8.1",
     "vue": "^3.0.0-0",
     "vue-qrcode-reader": "^3.0.3",
-    "vue-router": "^4.0.0-0",
+    "vue-router": "^4.0.10",
     "vue3-qrcode-reader": "^0.0.1"
   },
   "devDependencies": {

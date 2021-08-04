@@ -74,9 +74,11 @@ export default  {
           }
         })
 
+        // check if voucherUser["cashierRef"] != null 
         db.collection('userVoucher')
           .doc(this.result)
-          .update({newCashierRef: "YunTian"}) //yuntian to be set dynamically!
+          .update({cashierRef: db.doc("cashier/SqAH7vjW6zwBZzosVr2E"), redeemedAt: new Date()}) 
+          //yuntian to be set dynamically!
       
     },
      async onInit (promise) {
