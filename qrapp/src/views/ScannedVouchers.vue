@@ -23,7 +23,8 @@
               <img class="image" :src="item.img">
             </ion-thumbnail>
             <ion-label>
-              <h2>{{item.redeemName}}</h2>
+              <router-link class ="link" :to="'/tabs/redeemedVoucherDetail/' + item.id"><h2>{{item.redeemName}}</h2></router-link>
+              
               <p>Redeemed Value: {{item.redeemValueText}}</p>
               <p>Redeemed on: {{item.redeemDate}}</p>
             </ion-label>
@@ -61,6 +62,7 @@ export default  {
             if (cashierId == 'natalie@gmail.com') {
               const redeemDate = this.formatDate(doc.data().redeemedAt.toDate())
               doc.data().voucherTypeRef.get().then((snapshot) => {
+                const Id = doc.id
                 const redeemValueType = snapshot.data().valueType
                 const redeemValue = snapshot.data().value
                 const redeemName = snapshot.data().name
@@ -76,6 +78,7 @@ export default  {
                   redeemValueText: redeemValueText,
                   redeemDate: redeemDate,
                   img: image,
+                  id:Id
                 })
               })
             }
