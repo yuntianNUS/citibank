@@ -1,4 +1,5 @@
 <template>
+<div>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <ion-page>
     <ion-header>
@@ -9,11 +10,11 @@
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>        
-          <router-link style="text-decoration: none; color: inherit;" to="/" exact>
-            <ion-subtitle class="material-icons" slot="start">
+
+            <ion-subtitle class="material-icons" slot="start" v-on:click='back()'>
               arrow_back_ios
             </ion-subtitle>
-          </router-link>
+
           <ion-title size="large">Cart</ion-title>
         </ion-toolbar>
         <ion-list>
@@ -45,6 +46,7 @@
       <ion-button id='checkoutButton' @click="checkout">Check Out</ion-button>
     </ion-content>
   </ion-page>
+  </div>
 </template>
 
 <script>
@@ -63,9 +65,13 @@ export default  {
       userWallet: null,
       totalCost: null,
       walletErrorMsg: "",
+      backroute: this.$router
     }
   },
   methods: {
+    back:function(){
+      this.backroute.go(-1);
+  },
     fetchItems: function() {
       let cart = []
       const refList = []

@@ -12,7 +12,9 @@
         <ion-toolbar>
           <ion-icon  id="back" v-on:click="back()" size="large" name="chevron-back"></ion-icon>        
           <ion-title size="large">{{merchantName}}</ion-title>
-          <router-link style="text-decoration: none; color: inherit;" to="cart" exact>
+
+
+          <router-link style="text-decoration: none; color: inherit;" to="/tabs/cart" exact>
             <ion-subtitle class="material-icons" slot="end">
               shopping_cart
             </ion-subtitle>
@@ -24,6 +26,7 @@
       <MerchantVoucherDetail :voucherListProp="this.voucherList" :merchantProp="this.merchant"></MerchantVoucherDetail>
     </ion-content> 
   </ion-page>
+
 </div>
 </template>
 
@@ -32,7 +35,6 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon} from '@i
 import MerchantVoucherDetail from '../components/MerchantVoucherDetail.vue';
 import {db} from '../main';
 import { defineComponent } from '@vue/runtime-core';
-
 
 export default defineComponent({
   name: 'Tab2',
@@ -47,7 +49,6 @@ export default defineComponent({
       userCartCount: null,
     }
   },
-
   methods: {
     fetchItems: function () {
       db.collection("merchant")

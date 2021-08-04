@@ -59,7 +59,7 @@
             </li>
           </ul>
           <br />
-          <ion-button @click="openModal">Open Modal</ion-button> <!--CHECK HERE -->
+          
           <ion-button
             id="cartButton"
             v-if="!codeDisplay && !errorDisplay"
@@ -67,12 +67,15 @@
             :disabled="(storage == null) || (addCartNum <= 0)"
             >Add to Cart</ion-button
           >
-          <ion-button
+          <ion-button id="buyButton"
             v-if="!codeDisplay && !errorDisplay"
             @click="alertBuyMethod"
             :disabled="storage == null"
             >Buy Now</ion-button
           >
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+           <a id = "share" class="fa fa-share fa-2x" v-if="!codeDisplay && !errorDisplay" @click="openModal"></a>
+
           <ion-card v-if="codeDisplay">
             <ion-card-header>
               <ion-item>
@@ -127,7 +130,8 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   alertController,
-  modalController
+  modalController,
+  IonIcon
 } from "@ionic/vue";
 import { db } from "@/main";
 import { warning } from "ionicons/icons";
@@ -142,7 +146,8 @@ export default defineComponent({
     IonCardHeader,
     IonCardSubtitle,
     IonCardTitle,
-    QrcodeVue
+    QrcodeVue,
+    IonIcon
   },
   props: {
     voucherListProp: {},
@@ -579,18 +584,29 @@ h3 {
   left: -35px;
 }
 
-button {
+a,button {
   background: none;
   padding: 0;
   float: left;
 }
 
+
 #cartButton {
   position: relative;
-  left: -10px;
+  left: -30px;
+}
+#buyButton {
+  position: relative;
+  left: -30px;
 }
 
 ion-card-title {
     text-align: center;
+}
+#share{
+    position:absolute;
+    margin-left:-30px;
+    bottom:10px;
+
 }
 </style>
