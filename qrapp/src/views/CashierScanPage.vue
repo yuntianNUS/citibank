@@ -95,8 +95,7 @@ export default  {
       await this.timeout(500)
       this.unpause()
       this.retrieveUniqueVoucherDetails()
-      router.push({name: 'CashierRedeemSuccess'})
-      
+      router.push(`CashierRedeemSuccess/${content}`) 
     },
 
     unpause () {
