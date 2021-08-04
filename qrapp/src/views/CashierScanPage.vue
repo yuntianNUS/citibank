@@ -4,28 +4,29 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Cashier Scan QR Code</ion-title>
+        <ion-title>Scan Voucher</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large"></ion-title>
+          <ion-title size="large">Scan Voucher</ion-title>
         </ion-toolbar>
       </ion-header>
-      <ExploreContainer name="Cashier Scan Page" />
-      <p class="decode-result">
+      <!-- <p class="decode-result">
         The QR Code Id is: <b>{{ result }}</b>
-      </p>
+      </p> -->
 
-      <div class="w-3/4 h-full m-auto">
+      <div class="w-3/4 h-full m-auto" id="camera">
         <qrcode-stream
           :camera="camera"
           @decode="onDecode"
           @init="onInit"
         ></qrcode-stream>
       </div>
-      <p>The Voucher ID is:{{ userVoucherPresentedId }}</p>
+      <img src="../assets/sample-qrcode.png">
+      <p>Align QR Code to fit the frame</p>
+      <!-- <p>The Voucher ID is:{{ userVoucherPresentedId }}</p> -->
     </ion-content>
   </ion-page>
 </template>
@@ -34,7 +35,6 @@
 
 import { alertController } from '@ionic/vue';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import ExploreContainer from '@/components/ExploreContainer.vue';
 import { QrcodeStream} from 'vue3-qrcode-reader'
 import { db } from "@/main";
 // import firebase from "firebase";
@@ -42,7 +42,7 @@ import { db } from "@/main";
 
 export default  {
   name: 'CashierScan',
-  components: { ExploreContainer, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, QrcodeStream},
+  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, QrcodeStream},
   data(){
     return{
       userVoucherPresentedId: "None",
@@ -169,7 +169,29 @@ export default  {
     
 
   }, 
-
-
 }
 </script>
+
+<style scoped>
+ion-title {
+  text-align: center;
+}
+#camera {
+  height: 75vw;
+  width: 75vw;
+  position: absolute;
+  top: 20vh;
+  left: 12.5vw;
+}
+p {
+  text-align: center;
+}
+img {
+  height: 70vw;
+  width: 70vw;
+  position: absolute;
+  top: 21.5vh;
+  left: 15vw;
+  opacity: 0.8;
+}
+</style>

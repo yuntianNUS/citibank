@@ -25,6 +25,10 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+
+
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyB12HK3OWg8WnelP67CVJfIQRCUHtHTsIo",
   authDomain: "citihackathon2021.firebaseapp.com",
