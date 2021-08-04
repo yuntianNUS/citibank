@@ -30,13 +30,13 @@ import './theme/variables.css';
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA2YFfC9nviDlzDmMp75o3t3t7vYH03auA",
-  authDomain: "citihack2021-87774.firebaseapp.com",
-  projectId: "citihack2021-87774",
-  storageBucket: "citihack2021-87774.appspot.com",
-  messagingSenderId: "406392240795",
-  appId: "1:406392240795:web:42075de140490e282e643e",
-  measurementId: "G-S7QQ263CLG"
+  apiKey: "AIzaSyB12HK3OWg8WnelP67CVJfIQRCUHtHTsIo",
+  authDomain: "citihackathon2021.firebaseapp.com",
+  projectId: "citihackathon2021",
+  storageBucket: "citihackathon2021.appspot.com",
+  messagingSenderId: "672053069671",
+  appId: "1:672053069671:web:c479a8553dc752209051c2",
+  measurementId: "G-T25QY5E5F1"
 };
 
 // Initialize Firebase
