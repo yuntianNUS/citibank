@@ -69,6 +69,7 @@
           <ion-button
             v-if="!codeDisplay && !errorDisplay"
             @click="alertBuyMethod"
+            :disabled="storage == null"
             >Buy Now</ion-button
           >
           <ion-card v-if="codeDisplay">
@@ -148,40 +149,35 @@ export default defineComponent({
     return { warning };
   },
   methods: {
-    display: function (item) {
-      console.log("DISPLAY");
-      this.costPoints = item.data().costPoints + " points or ";
-      this.costDollar = "$" + item.data().costDollar;
-      this.termsAddDetails = item.data().terms.additionalDetails;
-      if (item.data().terms.stackablePromotion == true) {
-        this.termsStackable =
-          "This voucher can be used in conjunction with other promotions.";
-      }
-      if (item.data().terms.stackablePromotion == false) {
-        this.termsStackable =
-          "This voucher cannot be used in conjunction with other promotions.";
-      }
-      this.validityDays =
-        "This voucher is valid for " +
-        item.data().terms.validityDays +
-        " days.";
-      this.validityItems =
-        "This voucher is valid for the following items: " +
-        item.data().terms.validityItems;
-      this.validityOutlets =
-        "This voucher is applicable to the following outlets: " +
-        item.data().terms.validityOutlets;
+    display: function (item){
+        console.log('DISPLAY')
+        this.storage = item
+        this.costPoints = item.data().costPoints + " points OR "
+        this.costDollar ="$ " + item.data().costDollar
+        this.termsAddDetails = item.data().terms.additionalDetails
+        if(item.data().terms.stackablePromotion == true){
+            this.termsStackable = 'This voucher can be used in conjunction with other promotions.'
+        }
+        if(item.data().terms.stackablePromotion == false){
+            this.termsStackable = 'This voucher cannot be used in conjunction with other promotions.'
+        }
+        this.validityDays= "This voucher is valid for " + item.data().terms.validityDays + " days."
+        this.validityItems = "This voucher is valid for the following items: " + item.data().terms.validityItems
+        this.validityOutlets = "This voucher is applicable to the following outlets: " + item.data().terms.validityOutlets
+        
+        const x = this.$refs[item.id]
+        console.log('x')
+        console.log(x)
+        if (this.previous != null){
+            this.previous.style.backgroundColor = "transparent"
+            this.previous.style.color = "#355B97"
+        
+        }
+        x.style.backgroundColor = "#020358"
+        x.style.color = "white"
+        this.previous = x
 
-      const x = this.$refs[item.id];
-      console.log("x");
-      console.log(x);
-      if (this.previous != null) {
-        this.previous.style.backgroundColor = "transparent";
-        this.previous.style.color = "#355B97";
-      }
-      x.style.backgroundColor = "#020358";
-      x.style.color = "white";
-      this.previous = x;
+        this.fetchItems();
     },
     default: function () {
       this.costPoints = "Please select voucher value";
@@ -196,7 +192,7 @@ export default defineComponent({
     fetchItems: function () {
       console.log("fetch items called");
       db.collection("voucherType")
-        .doc(this.voucherTypeId)
+        .doc(this.storage.id) //this.voucherTypeId
         .get()
         .then((documentSnapshot) => {
           if (documentSnapshot.exists) {
@@ -223,7 +219,7 @@ export default defineComponent({
       for (let i = 1; i <= this.addCartNum; i++) {
         console.log("ADD");
         const cartItem = {
-          voucherTypeRef: db.doc("voucherType/" + this.voucherTypeId),
+          voucherTypeRef: db.doc("voucherType/" + this.storage.id), //this.voucherTypeId
           creationDate: new Date(),
           randomNum: Math.random(), // as arrayunion wont addd duplicate entries
         };
@@ -313,13 +309,13 @@ export default defineComponent({
           .set({
             createdAt: new Date(),
             userRef: db.doc("user/" + "4AGK7K5pWEtTSidHcpL3"), // HARDCODE TO CHANGE
-            voucherTypeRef: db.doc("voucherType/" + this.voucherTypeId),
+            voucherTypeRef: db.doc("voucherType/" + this.storage.id), //this.voucherTypeId
             paymentType: purchaseMethod,
           });
 
         // update voucherType's count
         db.collection("voucherType")
-          .doc(this.voucherTypeId)
+          .doc(this.storage.id) //this.voucherTypeId
           .update({
             count: firebase.firestore.FieldValue.increment(-1),
           });
@@ -414,16 +410,17 @@ export default defineComponent({
       termsAddDetails: "",
       termsStackable: "",
       validityDays: null,
-      validityItems: "",
-      validityOutlets: null,
+      validityItems:"",
+      validityOutlets:null,
       route: this.$route.params.id,
+      storage: null,
 
       // Purchase's Data
       codeDisplay: false,
       errorDisplay: false,
       errorMsg: "",
       errorMsgLong: "",
-      voucherTypeId: "IeFsdsKI61bSXrr4106Z", // HARDCODE TO CHANGE
+      //voucherTypeId: "IeFsdsKI61bSXrr4106Z", // HARDCODE TO CHANGE
       voucherName: "",
       voucherValidityDays: null,
       voucherCost: null,
@@ -439,9 +436,9 @@ export default defineComponent({
   mounted() {
     this.default();
   },
-  created() {
-    this.fetchItems();
-  },
+//   created() {
+//     this.fetchItems();
+//   },
 });
 </script>
 
@@ -538,6 +535,7 @@ export default defineComponent({
 
 ion-card {
   height: 60vh;
+  text-align: center;
 }
 
 #increase {
