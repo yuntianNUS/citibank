@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id = "container">
-        <div class= "top-container">
+        <div class= "top-container" v-if="!codeDisplay">
         <img class="image" :src="imageProp" v-if="!codeDisplay">
         <p class="text"> Voucher Value </p>
         <p class= "value"> ${{voucherValueProp}}</p>
@@ -36,7 +36,7 @@
             </ion-card-content>
           </ion-card>
         <div class = "button">
-        <button @click="showQr"> Use Now </button>
+        <button @click="showQr" v-if="!codeDisplay"> Use Now </button>
         </div>
 
     </div> 
@@ -82,7 +82,7 @@ export default defineComponent({
 
 <style scoped>
 #container{
-    background-color:#f0f0f0;
+    /* background-color:#f0f0f0; */
 }
 #title{
     color: #020358;
