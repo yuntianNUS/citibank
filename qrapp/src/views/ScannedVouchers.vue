@@ -19,12 +19,13 @@
         </ion-toolbar>
         <ion-list>
           <ion-item v-for="(item, index) in redeemedList" :key="index">
-            <!-- <ion-thumbnail slot="start">
+            <ion-thumbnail slot="start">
               <img class="image" :src="item.img">
-            </ion-thumbnail> -->
+            </ion-thumbnail>
             <ion-label>
-              <h2>{{item.voucherTypeId}}</h2>
-              <p>${{item.redeemDate}}</p>
+              <h2>{{item.redeemName}}</h2>
+              <p>Redeemed Value: {{item.redeemValueText}}</p>
+              <p>Redeemed on: {{item.redeemDate}}</p>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -56,13 +57,29 @@ export default  {
       db.collection('userVoucher').get()
         .then((querySnapShot) => {
          querySnapShot.forEach((doc) => {
-           console.log('here')
            if (doc.data().cashierRef) {
             const cashierId = doc.data().cashierRef.id
             if (cashierId == 'natalie@gmail.com') {
-              const redeemDate = doc.data().redeemedAt
-              const voucherTypeId = doc.data().voucherTypeRef.id
-              this.redeemedList.push((voucherTypeId, redeemDate))
+              const redeemDate = doc.data().redeemedAt.toDate()
+              doc.data().voucherTypeRef.get().then((snapshot) => {
+                const redeemValueType = snapshot.data().valueType
+                const redeemValue = snapshot.data().value
+                const redeemName = snapshot.data().name
+                const image = snapshot.data().image
+                let redeemValueText = ""
+                if (redeemValueType == "$") {
+                  redeemValueText = "$" + redeemValue
+                } else {
+                  redeemValueText = redeemValue + ' %'
+                }
+
+                this.redeemedList.push({
+                  redeemName: redeemName,
+                  redeemValueText: redeemValueText,
+                  redeemDate: redeemDate,
+                  img: image,
+                })
+              })
             }
            }
          })
