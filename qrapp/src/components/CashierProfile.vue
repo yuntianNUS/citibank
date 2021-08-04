@@ -8,6 +8,8 @@
     <p class="text2">Profile Information </p>
     <p class="text3"> <img id = 'icon' src='../assets/user.png'>  &nbsp; &nbsp; {{name}}</p> 
     <p class="text3"> <img id = 'icon' src='../assets/email.png'> &nbsp; &nbsp; {{email}}</p> 
+    <p class="text3"> <img id = 'icon' src='../assets/location.png'> &nbsp; &nbsp; {{outlet}}</p> 
+    <p class="text3"> <img id = 'icon' src='../assets/building.png'> &nbsp; &nbsp; {{merchantName}}</p> 
     </div>
    
 
@@ -33,7 +35,12 @@ name:'Profile',
                       this.name = doc.data().name
                       this.email = doc.data().email
                       this.image = doc.data().image
+                      this.outlet = doc.data().outlet
                       console.log(doc.data().email)
+
+                      doc.data().merchant.get().then(snapshot =>{
+                          this.merchantName = snapshot.data().name
+                      })
 
                   }
               })
@@ -48,7 +55,9 @@ name:'Profile',
           points: "",
           dollar:"",
           email:"",
-          image:""
+          image:"",
+          merchantName:"",
+          outlet:""
     
       }
     },

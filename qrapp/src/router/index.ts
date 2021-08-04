@@ -116,6 +116,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'scannedVouchers',
         component: () => import('@/views/ScannedVouchers.vue')
+      },
+      {
+        path: 'redeemedVoucherDetail/:id',
+        component: () => import('@/views/redeemedVoucherDisplay.vue')
       }
     ]
   }
