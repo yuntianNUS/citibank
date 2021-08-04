@@ -72,7 +72,10 @@ export default defineComponent({
         showQr: function() {
             this.codeDisplay = true
             this.userVoucherId = this.$route.params.id
-        }
+        },
+        closeCode: function () {
+            this.codeDisplay = false;
+        },
     }
 })
 </script>
