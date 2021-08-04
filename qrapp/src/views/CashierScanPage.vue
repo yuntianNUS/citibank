@@ -1,5 +1,6 @@
 <template>
-  <ion-button @click="presentAlert">Show Alert</ion-button>
+  <ion-button @click="presentFailedAlert">Show Alert</ion-button>
+  <ion-button @click="presentPassAlert">Show Alert</ion-button>
   <ion-page>
     <ion-header>
       <ion-toolbar>
@@ -150,7 +151,7 @@ export default  {
         window.setTimeout(resolve, ms)
       })
     }, //end qr scanner methods
-    async presentAlert() {
+    async presentFailedAlert() {
       const alert = await alertController
         .create({
           cssClass: 'my-custom-class',
