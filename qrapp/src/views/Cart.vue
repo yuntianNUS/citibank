@@ -357,7 +357,8 @@ export default  {
   left: 0px
 }
 ion-title {
-  left: 35vw;
+  text-align: center;
+  /* left: vw; */
 }
 ion-thumbnail {
   height: 80px;
