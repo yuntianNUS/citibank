@@ -25,6 +25,15 @@
               <h2>{{item.title}}</h2>
               <p>${{item.dollar}} or {{item.points}} points</p>
               <p>Quanitity: {{item.quantity}}</p>
+              <ul>
+                <button @click="editCart(index, -1)" :disabled="item.quantity == 0"><li class="material-icons" id="decrease">
+                  remove_circle_outline
+                </li></button>
+                <li><h3 id="cart-num">{{item.quantity}}</h3></li>
+                <li class="material-icons" id="increase" v-on:click="editCart(index, +1)">
+                  add_circle_outline
+                </li>
+              </ul>
             </ion-label>
           </ion-item>
           <ion-item>
@@ -283,6 +292,44 @@ export default  {
 
       const { role } = await alert.onDidDismiss();
     },
+    editCart: async function (index, change) {
+      this.cartList[index].quantity += change
+      // update database
+      if (change > 0) {
+        await db.collection('user').doc('4AGK7K5pWEtTSidHcpL3') //HARDCODE TO CHANGE
+        .update({
+          cart: firebase.firestore.FieldValue.arrayUnion({
+            voucherTypeRef: this.cartList[index].voucherTypeRef,
+            creationDate: new Date(),
+            radomNum: Math.random(),
+          }) 
+        }).then(() => {
+          this.$router.go();
+        })
+      } else { // delete item by iterating through to find the first instance
+        let itemToDelete = null
+        db.collection('user').doc('4AGK7K5pWEtTSidHcpL3')
+        .get().then(snapshot => {
+          if (snapshot.exists) {
+            const cartItems = snapshot.data().cart
+            for (let i = 0; i < cartItems.length; i++) {
+              const item = cartItems[i]
+              const itemId = item.voucherTypeRef.id
+              const cartId = this.cartList[index].voucherTypeRef.id
+              if (itemId == cartId) {
+                itemToDelete = item
+                break;
+              }
+            }
+            db.collection('user').doc('4AGK7K5pWEtTSidHcpL3').update({
+              cart: firebase.firestore.FieldValue.arrayRemove(itemToDelete)
+            }).then(() => {
+              this.$router.go();
+            })
+          }
+        })
+      }
+    }
   },
   created() {
     this.fetchItems();
@@ -321,5 +368,37 @@ h5 {
   position: absolute;
   bottom: 70px;
   right: 30px;
+}
+#increase {
+  font-size: 20px;
+  position: relative;
+  left:-20px;
+  bottom: -2px
+}
+#decrease {
+  font-size: 20px;
+  position: relative;
+  left:-120px;
+  bottom: -2px
+}
+ul,li {
+  list-style: none;
+  position: relative;
+  margin: 0;
+}
+li {
+  float:left
+}
+h3 {
+  width: 10px;
+  float:left;
+  position: relative;
+  left: -13px;
+  bottom: -1px;
+  font-size: 20px;
+  font-weight: bold;
+}
+button {
+  background: none;
 }
 </style>
