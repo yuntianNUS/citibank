@@ -19,7 +19,8 @@
         </div>
         <p class="points">{{ costPoints }} {{ costDollar }}</p>
       </div>
-      <div class="terms">
+
+      <div v-if="clicked==true" class="terms">
         <div class="bottom-container">
           <p class="text">Terms of Use</p>
           <p>
@@ -40,9 +41,11 @@
         </div>
       </div>
     </div>
-    <ion-footer>
-      <ion-toolbar>
+
+    
         <div id="container">
+
+          <div class = "footer">
           <ul v-if="!codeDisplay && !errorDisplay">
             <button @click="addCartNum -= 1" :disabled="addCartNum == 0">
               <li class="material-icons" id="decrease">remove_circle</li>
@@ -75,7 +78,9 @@
           >
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
            <a id = "share" class="fa fa-share fa-2x" v-if="!codeDisplay && !errorDisplay" @click="openModal"></a>
+          </div>
 
+         
           <ion-card v-if="codeDisplay">
             <ion-card-header>
               <ion-item>
@@ -114,8 +119,7 @@
             </ion-card-content>
           </ion-card>
         </div>
-      </ion-toolbar>
-    </ion-footer>
+
   </div>
 </template>
 
@@ -165,6 +169,7 @@ export default defineComponent({
   },
   methods: {
     display: function (item){
+        this.clicked = true
         console.log('DISPLAY')
         this.storage = item
         this.costPoints = item.data().costPoints + " points OR "
@@ -446,6 +451,7 @@ export default defineComponent({
       userCartCount: null,
       walletBalanceMsg: "",
       addCartNum: 0,
+      clicked:false
     };
   },
   mounted() {
@@ -458,9 +464,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#container {
-  background-color: #f0f0f0;
-}
+/* .scroll{
+  overflow:auto;
+  height:80px;
+  padding-bottom: 30%; */
+/* } */
 #title {
   color: #020358;
   font-size: 20px;
@@ -508,6 +516,8 @@ export default defineComponent({
   border-radius: 15px;
   width: 100%;
   height: 100%;
+  overflow:auto;
+  padding-bottom:20%;
 }
 #icon {
   height: 25px;
@@ -597,16 +607,21 @@ a,button {
 }
 #buyButton {
   position: relative;
-  left: -30px;
+  top:-52px;
+  left: 170px;
 }
 
 ion-card-title {
     text-align: center;
 }
 #share{
-    position:absolute;
-    margin-left:-30px;
-    bottom:10px;
+    position:relative;
+    left:320px;
+    top:-40px;
 
+}
+.footer{
+  position: fixed;
+  top:88%;
 }
 </style>
