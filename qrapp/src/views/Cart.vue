@@ -75,7 +75,7 @@ export default  {
     fetchItems: function() {
       let cart = []
       const refList = []
-      db.collection('user').doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+      db.collection('user').doc('sabrina@gmail.com')
       .get().then(documentSnapshot => {
         if (documentSnapshot.exists) {
           cart = documentSnapshot.data().cart
@@ -165,14 +165,14 @@ export default  {
         console.log('transaction successful!')
         if (purchaseMethod == '$') {
           db.collection('user')
-          .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+          .doc('sabrina@gmail.com')
           .update({
             cart: [],
             walletBalanceDollar: firebase.firestore.FieldValue.increment(- this.totalCost),
           })
         } else if (purchaseMethod == "points") {
           db.collection('user')
-          .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+          .doc('sabrina@gmail.com')
           .update({
             cart: [],
             walletBalancePoints: firebase.firestore.FieldValue.increment(- this.totalCost),
@@ -189,7 +189,7 @@ export default  {
             db.collection('userVoucher').doc(userVoucherId)
             .set({
               createdAt: new Date(),
-              userRef: db.doc('user/' + '4AGK7K5pWEtTSidHcpL3'), // HARDCODE TO CHANGE
+              userRef: db.doc('user/' + 'sabrina@gmail.com'),
               voucherTypeRef: db.doc('voucherType/' + ele.voucherTypeRef.id),
               paymentType: purchaseMethod
             });
@@ -214,7 +214,7 @@ export default  {
               handler: () => {
                 console.log('Cash Chosen')
                 db.collection('user')
-                .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+                .doc('sabrina@gmail.com')
                 .get()
                 .then(documentSnapshot => {
                   if (documentSnapshot.exists) {
@@ -230,7 +230,7 @@ export default  {
               handler: () => {
                 console.log('Points Chosen')
                 db.collection('user')
-                .doc('4AGK7K5pWEtTSidHcpL3') // HARDCODE TO CHANGE
+                .doc('sabrina@gmail.com')
                 .get()
                 .then(documentSnapshot => {
                   if (documentSnapshot.exists) {
@@ -304,7 +304,7 @@ export default  {
       this.totalPoints += change * this.cartList[index].points
       // update database
       if (change > 0) {
-        await db.collection('user').doc('4AGK7K5pWEtTSidHcpL3') //HARDCODE TO CHANGE
+        await db.collection('user').doc('sabrina@gmail.com')
         .update({
           cart: firebase.firestore.FieldValue.arrayUnion({
             voucherTypeRef: this.cartList[index].voucherTypeRef,
@@ -316,7 +316,7 @@ export default  {
         })
       } else { // delete item by iterating through to find the first instance
         let itemToDelete = null
-        db.collection('user').doc('4AGK7K5pWEtTSidHcpL3')
+        db.collection('user').doc('sabrina@gmail.com')
         .get().then(snapshot => {
           if (snapshot.exists) {
             const cartItems = snapshot.data().cart
@@ -329,7 +329,7 @@ export default  {
                 break;
               }
             }
-            db.collection('user').doc('4AGK7K5pWEtTSidHcpL3').update({
+            db.collection('user').doc('sabrina@gmail.com').update({
               cart: firebase.firestore.FieldValue.arrayRemove(itemToDelete)
             }).then(() => {
               // this.$router.go();

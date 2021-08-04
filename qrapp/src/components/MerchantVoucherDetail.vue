@@ -220,7 +220,7 @@ export default defineComponent({
           }
         });
       db.collection("user")
-        .doc("4AGK7K5pWEtTSidHcpL3") // HARDCODE TO CHANGE
+        .doc("sabrina@gmail.com")
         .get()
         .then((documentSnapshot) => {
           if (documentSnapshot.exists) {
@@ -245,7 +245,7 @@ export default defineComponent({
 
       await db
         .collection("user")
-        .doc("4AGK7K5pWEtTSidHcpL3") // HARDCODE TO CHANGE
+        .doc("sabrina@gmail.com")
         .update({
           cart: firebase.firestore.FieldValue.arrayUnion.apply(
             this,
@@ -323,7 +323,7 @@ export default defineComponent({
           .doc(this.userVoucherId)
           .set({
             createdAt: new Date(),
-            userRef: db.doc("user/" + "4AGK7K5pWEtTSidHcpL3"), // HARDCODE TO CHANGE
+            userRef: db.doc("user/" + "sabrina@gmail.com"),
             voucherTypeRef: db.doc("voucherType/" + this.storage.id), //this.voucherTypeId
             paymentType: purchaseMethod,
           });
@@ -338,7 +338,7 @@ export default defineComponent({
         // user: update vouchers and wallet balance
         if (purchaseMethod == "$") {
           db.collection("user")
-            .doc("4AGK7K5pWEtTSidHcpL3") // HARDCODE TO CHANGE
+            .doc("sabrina@gmail.com")
             .update({
               walletBalanceDollar: firebase.firestore.FieldValue.increment(
                 -this.voucherCost
@@ -347,7 +347,7 @@ export default defineComponent({
           this.walletBalanceMsg = "$" + (this.userWallet - this.voucherCost);
         } else if (purchaseMethod == "points") {
           db.collection("user")
-            .doc("4AGK7K5pWEtTSidHcpL3") // HARDCODE TO CHANGE
+            .doc("sabrina@gmail.com")
             .update({
               walletBalancePoints: firebase.firestore.FieldValue.increment(
                 -this.voucherCost
@@ -380,7 +380,7 @@ export default defineComponent({
             handler: () => {
               console.log("Cash Chosen");
               db.collection("user")
-                .doc("4AGK7K5pWEtTSidHcpL3") // HARDCODE TO CHANGE
+                .doc("sabrina@gmail.com")
                 .get()
                 .then((documentSnapshot) => {
                   if (documentSnapshot.exists) {
@@ -397,7 +397,7 @@ export default defineComponent({
             handler: () => {
               console.log("Points Chosen");
               db.collection("user")
-                .doc("4AGK7K5pWEtTSidHcpL3") // HARDCODE TO CHANGE
+                .doc("sabrina@gmail.com")
                 .get()
                 .then((documentSnapshot) => {
                   if (documentSnapshot.exists) {

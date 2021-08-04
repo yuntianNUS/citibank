@@ -34,8 +34,8 @@ export default  {
         cart: [],
         email: this.email,
         name: this.name,
-        walletBallanceDollar: 10,
-        walletBallancePoint: 1000,
+        walletBalanceDollar: 10,
+        walletBalancePoints: 1000,
         image:"https://www.pngitem.com/pimgs/m/80-802775_transparent-background-user-png-png-download.png"
       }).then(() => {
         this.$router.push("/tabs/home")
