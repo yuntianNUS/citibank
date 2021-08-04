@@ -58,7 +58,6 @@ export default defineComponent({
                           this.voucherList.push([doc, snapshot2, snapshot3,"EXPIRING",date])
                       }
                       else{
-                        
                         this.voucherList.push([doc, snapshot2, snapshot3,"",date])
                       }
                       

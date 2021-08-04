@@ -2,12 +2,12 @@
   <div>
     <div id = "container">
         <div class= "top-container">
-        <img class="image" :src="imageProp">
+        <img class="image" :src="imageProp" v-if="!codeDisplay">
         <p class="text"> Voucher Value </p>
         <p class= "value"> ${{voucherValueProp}}</p>
-        <p class= "points">{{costPointsProp}} points OR ${{costDollarProp}}</p>
+        <p class= "points" v-if="!codeDisplay">{{costPointsProp}} points OR ${{costDollarProp}}</p>
         </div>
-        <div class="terms">
+        <div class="terms" v-if="!codeDisplay">
             <div class="bottom-container">
         <p class="text"> Terms of Use</p>
         <p> <img id = 'icon' src='../assets/add.jpeg'>  {{termsAddDetailsProp}}</p> 
@@ -17,8 +17,26 @@
         <p> <img id = 'icon' src='../assets/location.png'> {{validityOutletsProp}}</p> 
         </div>
         </div>
+        <ion-card v-if="codeDisplay">
+            <ion-card-header>
+              <ion-item>
+                <ion-icon
+                  name="close-sharp"
+                  slot="end"
+                  @click="closeCode"
+                ></ion-icon>
+              </ion-item>
+              <ion-card-title>Voucher</ion-card-title>
+            </ion-card-header>
+            <qrcode-vue :value="userVoucherId" :size="200" level="H" />
+            <ion-card-content>
+              Show this QR Code to <br />
+              the staff at the counter. <br />
+              <br />
+            </ion-card-content>
+          </ion-card>
         <div class = "button">
-        <button> Use Now </button>
+        <button @click="showQr"> Use Now </button>
         </div>
 
     </div> 
@@ -26,27 +44,36 @@
   
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from '@vue/runtime-core';
-
+import QrcodeVue from "qrcode.vue";
 
 export default defineComponent({
-  components: {},
+  components: {QrcodeVue},
+  data() {
+      return {
+          codeDisplay: false,
+          userVoucherId: "",
+      }
+  },
   props: {
-    voucherValueProp: {},
-    costPointsProp: {},
-    costDollarProp: {},
-    termsAddDetailsProp:{},
-    termsStackableProp:{},
-    validityDaysProp: {},
-    validityItemsProp: {},
-    validityOutletsProp:{},
-    expiresOnProp:{},
-    imageProp:{}
-}
-//   props: {
-//     name: String
-//   }
+        voucherValueProp: {},
+        costPointsProp: {},
+        costDollarProp: {},
+        termsAddDetailsProp:{},
+        termsStackableProp:{},
+        validityDaysProp: {},
+        validityItemsProp: {},
+        validityOutletsProp:{},
+        expiresOnProp:{},
+        imageProp:{}
+    },
+    methods: {
+        showQr: function() {
+            this.codeDisplay = true
+            this.userVoucherId = this.$route.params.id
+        }
+    }
 })
 </script>
 
@@ -120,6 +147,10 @@ button{
     padding-left:5%;
     padding-right:5%;
     padding-bottom:5%;
+}
+ion-card {
+  height: auto;
+  text-align: center;
 }
 
 </style>
