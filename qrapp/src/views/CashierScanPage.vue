@@ -24,7 +24,7 @@
           @init="onInit"
         ></qrcode-stream>
       </div>
-      <img src="../assets/sample-qrcode.png">
+      <img src="../assets/sample-qrcode.png" />
       <p>Align QR Code to fit the frame</p>
       <!-- <p>The Voucher ID is:{{ userVoucherPresentedId }}</p> -->
     </ion-content>
@@ -53,53 +53,49 @@ export default  {
       paymentType: null,
       userRef: null,
       voucherTypeRef: null,
-      isApplicationVoucher: false,
-      isVoucherValid: false
+      isApplicationVoucher: null,
+      isVoucherRedeemable: null,
+      failImgUrl: "https://www.google.com/url?sa=i&url=https%3A%2F%2Ftoppng.com%2Fwrong-cross-symbol-PNG-free-PNG-Images_183175&psig=AOvVaw1rTvSBDyWZQyIitumY7sMb&ust=1628196964102000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCLD8mb-gmPICFQAAAAAdAAAAABAD"
     }
   }, 
 
   methods: {
-    checkIsOurApplicationVoucher() {
-      db.collection('userVoucher')
-        .doc('userVoucher')
+    async checkIsAppVoucher() {
+      console.log("CheckIsAppVoucherCalled")
+      await db.collection('userVoucher')
+        .doc(this.result)
         .get()
         .then(doc => {
-          this.checkIsOurApplicationVoucher = true
+          this.isApplicationVoucher = doc.exists
+          // console.log("Voucher Exists?: ", doc.exists)
+          console.log(this.isApplicationVoucher)
           return doc.exists
         })
     },
-    checkHasVoucherBeenRedeemed() {
-      db.collection('userVoucher')
+    async checkHasVoucherBeenRedeemed() {
+      console.log("CheckHasRedeemedCalled")
+      await db.collection('userVoucher')
           .doc(this.result)
           .get()
           .then(documentSnapShot => {
-            console.log('Line60: ' + documentSnapShot.exists)
             if (documentSnapShot.exists) {
-              console.log("Cashier Ref: " + documentSnapShot.data().cashierRef)
-              this.isVoucherValid = true
+              (documentSnapShot.data().cashierRef == null) ? this.isVoucherRedeemable = true : this.isVoucherRedeemable = false
+              console.log("isVoucherRedeemable",this.isVoucherRedeemable)
+              console.log("VoucherRef is null?:",documentSnapShot.data().cashierRef == null)
               return documentSnapShot.data().cashierRef != null
-              // if (documentSnapShot.data().cashierRef != null) {
-              //   this.isVoucherValid = false
-              // }
             }
           })
     },
     async redeemVoucher() {
-        console.log("redeeming voucher.")
-        console.log("is voucher valid: " + this.isVoucherValid)
-        console.log("is it our application qr code: ", this.isApplicationVoucher)
-
-        if (this.isVoucherValid && this.isApplicationVoucher) {
-          console.log("=======Vocher is valid=========")
-          db.collection('userVoucher').doc(this.result).update({redeemedAt: new Date(), cashierRef: db.doc("cashier/natalie@gmail.com")})
-          this.$router.push(`CashierRedeemSuccess/${this.result}`)
-        } else {
-          // alert("Voucher Code is invalid/has been redeemed.")
-          await this.presentAlert()
-        }
+      console.log("redeeming voucher() called")
+      await db.collection('userVoucher')
+        .doc(this.result)
+        .update({
+          redeemedAt: new Date(), 
+          cashierRef: db.doc("cashier/natalie@gmail.com")
+        })
     },
     retrieveUniqueVoucherDetails() {
-      console.log("CashierScanPage retrieveUniqueVoucherDetails Called. Amen.")
       console.log("Voucher Id: " + this.result)
       db.collection('userVoucher')
         .doc(this.result)
@@ -114,7 +110,6 @@ export default  {
             this.voucherTypeRef = documentSnapshot.data().voucherTypeRef
           }
         })
-      
     },
     async onInit (promise) {
       try {
@@ -125,16 +120,31 @@ export default  {
         this.showScanConfirmation = this.camera === "off"
       }
     },
-    async onDecode (content) {
+    async onDecode (content) { //pseudo main()
       this.result = content
-
+      console.log("In onDecode")
+      console.log(content)
       this.pause()
       await this.timeout(500)
       this.unpause()
-      this.checkIsOurApplicationVoucher()
-      this.checkIsOurApplicationVoucher()
-      this.retrieveUniqueVoucherDetails()
-      this.redeemVoucher()
+
+      await this.checkIsAppVoucher()
+
+      if (this.isApplicationVoucher) {
+        await this.checkHasVoucherBeenRedeemed()
+      }
+      
+      console.log("++++++++++++++++++++")
+      console.log("isApplicationVoucher", this.isApplicationVoucher)
+      console.log("isVoucherRedeemable?", this.isVoucherRedeemable)
+      console.log("++++++++++++++++++++")
+
+      if (this.isApplicationVoucher && this.isVoucherRedeemable) {
+        await this.redeemVoucher()
+        await this.presentPassAlert()
+      } else {
+        await this.presentFailedAlert()
+      }
       
     },
 
@@ -152,12 +162,28 @@ export default  {
       })
     }, //end qr scanner methods
     async presentFailedAlert() {
+      console.log("Present Failed Called")
       const alert = await alertController
         .create({
           cssClass: 'my-custom-class',
           header: 'Invalid QR Code',
           subHeader: 'This is an invalid QR-Code. It could be already redeemed.',
-          message: 'Invalid QR Code.',
+          message: `<img src="https://toppng.com/uploads/preview/wrong-cross-symbol-11562969015bvubqupjq3.png" alt="g-maps" style="border-radius: 2px">`,
+          buttons: ['OK'],
+        });
+      await alert.present();
+
+      const { role } = await alert.onDidDismiss();
+      console.log('onDidDismiss resolved with role', role);
+    },
+    async presentPassAlert() {
+      console.log("Present PASS Called")
+      const alert = await alertController
+        .create({
+          cssClass: 'my-custom-class',
+          header: 'Success',
+          subHeader: '',
+          message: `<img src="https://icon2.cleanpng.com/20180404/gdq/kisspng-check-mark-computer-icons-clip-art-green-tick-5ac5328d7fdf55.2729449315228729735238.jpg" alt="g-maps" style="border-radius: 2px">`,
           buttons: ['OK'],
         });
       await alert.present();
@@ -165,9 +191,6 @@ export default  {
       const { role } = await alert.onDidDismiss();
       console.log('onDidDismiss resolved with role', role);
     }
-
-    
-
   }, 
 }
 </script>
