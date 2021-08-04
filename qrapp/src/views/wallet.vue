@@ -20,7 +20,7 @@
         </div>
         
         <div class="float-child blue">
-          <div><p class= 'text'> {{walletDollar}}.00 </p> <p class='smalltext'> SGD </p> </div>
+          <div><p class= 'text'> {{walletDollar}} </p> <p class='smalltext'> SGD </p> </div>
         </div>
         
       </div>
@@ -89,6 +89,7 @@ export default defineComponent({
     padding: 10px;
     border-radius: 10px;
     color:white;
+    height: 10em;
     /* background-color: black; */
 }  
 
