@@ -27,7 +27,7 @@
 
 </template>
 
-<script lang="ts">
+<script>
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon} from '@ionic/vue';
 import MerchantVoucherDetail from '../components/MerchantVoucherDetail.vue';
 import {db} from '../main';
@@ -40,21 +40,21 @@ export default defineComponent({
     return{
       merchantName: "",
       merchantId: this.$route.params.id,
-      voucherList: [] as any,
+      voucherList: [],
       merchant:{},
-      backroute:this.$router
+      backroute:this.$router,
+      userCartCount: null,
     }
   },
   methods: {
     fetchItems: function () {
-      db
-        .collection("merchant")
+      db.collection("merchant")
         .get()
         .then((querySnapShot) => {
           querySnapShot.forEach((doc) => {
               if(doc.id == this.merchantId){
-                doc.data().voucherTypes.forEach((voucher: any) => { //for each voucher type
-                    voucher.get().then((snapshot: any) => { //snapshot: voucher type data
+                doc.data().voucherTypes.forEach((voucher) => { //for each voucher type
+                    voucher.get().then((snapshot) => { //snapshot: voucher type data
                         if (snapshot.data().count!=0){
                             this.merchantName = doc.data().name
                             this.voucherList.push(snapshot)
@@ -70,13 +70,21 @@ export default defineComponent({
 
           })
         })
-
+    
+    // User Cart's fetch items
+    db.collection('user')
+      .doc('4AGK7K5pWEtTSidHcpL3')
+      .get().then(snapshot => {
+        if (snapshot.exists) {
+          this.userCartCount = snapshot.data().cart.length
+        }
+      })
   },
 back:function(){
       this.backroute.go(-1);
   }
-  },
-  mounted(){
+},
+  created(){
     this.fetchItems()
   }
 })
@@ -88,14 +96,14 @@ back:function(){
   bottom: 7px;
   margin-left:50px;
   position: absolute;
-  right: 20px
+  right: 35px
 }
 
 ion-badge {
   position: absolute;
   right: 20px;
-  bottom: 20px;
-  font-size: 1rem;
+  bottom: 23px;
+  font-size: 0.85rem;
 }
 
 ion-title {

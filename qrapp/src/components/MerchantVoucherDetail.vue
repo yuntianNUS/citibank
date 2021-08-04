@@ -63,7 +63,7 @@
             id="cartButton"
             v-if="!codeDisplay && !errorDisplay"
             @click="toCart"
-            :disabled="addCartNum <= 0"
+            :disabled="(storage == null) || (addCartNum <= 0)"
             >Add to Cart</ion-button
           >
           <ion-button
@@ -566,7 +566,7 @@ h3 {
   padding: 0px 10px;
   position: relative;
   bottom: 13px;
-  left: -20px;
+  left: -35px;
 }
 
 button {
