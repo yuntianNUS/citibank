@@ -4,7 +4,8 @@
     <div id = "container">
         <p id = "title">Merchants</p>
         <input class = 'input' type="text" v-model="search" placeholder="Search voucher"/>
-          <div v-for="item in filteredList" :key="item.id">   
+
+          <div class= 'random' v-for="item in filteredList" :key="item.id">   
               <router-link class="link" :to="'/tabs/merchantVoucherDetail/'+item.id">{{item.data().name}}</router-link>
               <img class="image" :src="item.data().image">
           </div>
@@ -122,6 +123,9 @@ export default defineComponent({
   text-decoration: none;
   font-size:15px;
   font-weight:bold;
+}
+.random{
+  margin-top:5%;
 }
 
 </style>
