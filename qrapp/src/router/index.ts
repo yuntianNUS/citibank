@@ -5,7 +5,7 @@ import Tabs from '../views/Tabs.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/tabs/tab1'
+    redirect: '/tabs/home'
   },
   {
     path: '/tabs/',
@@ -13,19 +13,19 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '',
-        redirect: '/tabs/tab1'
+        redirect: '/tabs/home'
       },
       {
-        path: 'tab1',
-        component: () => import('@/views/Tab1.vue')
+        path: 'Home',
+        component: () => import('@/views/home.vue')
       },
       {
-        path: 'tab2',
-        component: () => import('@/views/Tab2.vue')
+        path: 'purchasedVoucherDetail/:id',
+        component: () => import('@/views/purchasedVoucherDisplay.vue')
       },
       {
-        path: 'tab3',
-        component: () => import('@/views/Tab3.vue')
+        path: 'redeemedVoucherDetail/:id',
+        component: () => import('@/views/redeemedVoucherDisplay.vue')
       },
       {
         path: 'testBuy',
@@ -34,7 +34,20 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'cart',
         component: () => import('@/views/Cart.vue')
+      },
+      {
+        path: 'merchantVoucherDetail/:id',
+        component: () => import('@/views/merchantVoucherDisplay.vue')
+      },
+      {
+        path: 'wallet',
+        component: () => import('@/views/wallet.vue')
+      },
+      {
+        path: 'profile',
+        component: () => import('@/views/profile.vue')
       }
+
     ]
   }
 ]

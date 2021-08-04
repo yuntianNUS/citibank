@@ -9,7 +9,7 @@
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>        
-          <router-link style="text-decoration: none; color: inherit;" to="testBuy" exact>
+          <router-link style="text-decoration: none; color: inherit;" to="/" exact>
             <ion-subtitle class="material-icons" slot="start">
               arrow_back_ios
             </ion-subtitle>

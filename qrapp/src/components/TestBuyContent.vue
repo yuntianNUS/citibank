@@ -1,6 +1,5 @@
 <template>
   <div id="container">
-    <strong v-if="(!codeDisplay) && (!errorDisplay)">{{ name }}</strong><br>
     <ul>
       <button @click="addCartNum-=1" :disabled="addCartNum == 0"><li class="material-icons" id="decrease">
         remove_circle
@@ -11,7 +10,7 @@
       </li>
     </ul>
     <br>
-    <ion-button v-if="(!codeDisplay) && (!errorDisplay)" @click="toCart" :disabled="addCartNum <= 0">Add to Cart</ion-button>
+    <ion-button id="cartButton" v-if="(!codeDisplay) && (!errorDisplay)" @click="toCart" :disabled="addCartNum <= 0">Add to Cart</ion-button>
     <ion-button v-if="(!codeDisplay) && (!errorDisplay)" @click="alertBuyMethod">Buy Now</ion-button>
     <ion-card v-if=codeDisplay>
       <ion-card-header>
@@ -322,17 +321,24 @@ ul,li {
 
 li {
   float: left;
+  margin: 0;
 }
 
 h3 {
   padding: 0px 10px;
   position: relative;
   bottom: 13px;
+  left: -20px;
 }
 
 button {
   background: none;
   padding: 0;
   float:left;
+}
+
+#cartButton {
+  position: relative; 
+  left: -10px;
 }
 </style>

@@ -19,11 +19,13 @@
     "@capacitor/status-bar": "1.0.2",
     "@ionic/vue": "^5.4.0",
     "@ionic/vue-router": "^5.4.0",
+    "cocoapods": "0.0.0",
     "core-js": "^3.6.5",
     "firebase": "^8.8.1",
     "qrcode.vue": "^3.2.2",
     "vue": "^3.0.0-0",
     "vue-material-design-icons": "^4.12.1",
+    "vue-multiselect": "^2.1.6",
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
