@@ -7,7 +7,6 @@
           <div v-for="item in filteredList" :key="item.id">   
               <router-link class="link" :to="'/tabs/merchantVoucherDetail/'+item.id">{{item.data().name}}</router-link>
               <img class="image" :src="item.data().image">
-              
           </div>
 
     </div>
