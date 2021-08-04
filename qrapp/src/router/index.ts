@@ -32,6 +32,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/SignInCashier.vue')
   },
   {
+    path: '/cashier/scannedVouchers',
+    component: () => import('@/views/ScannedVouchers.vue')
+  },
+  {
     path: '/tabs/',
     component: Tabs,
     children: [
