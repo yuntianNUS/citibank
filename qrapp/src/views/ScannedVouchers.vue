@@ -10,7 +10,7 @@
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>        
-          <ion-title size="large">Redeemed</ion-title>
+          <ion-title size="medium">Redeemed</ion-title>
         </ion-toolbar>
         <ion-list>
           <ion-item v-for="(item, index) in redeemedList" :key="index">
@@ -165,5 +165,10 @@ h3 {
 }
 button {
   background: none;
+}
+.link{
+  color: #020358;
+  text-decoration: none;
+
 }
 </style>
