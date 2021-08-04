@@ -70,6 +70,21 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'profile',
         component: () => import('@/views/profile.vue')
+      },
+      // {
+      //   path: 'testBuy',
+      //   name: 'testBuy',
+      //   component: () => import('@/views/testBuy.vue')
+      // },
+      {
+        path: 'CashierScan',
+        name: 'CashierScan',
+        component: () => import('@/views/CashierScanPage.vue')
+      },
+      {
+        path: 'CashierRedeemSuccess/:passedVoucherId',
+        name: 'CashierRedeemSuccess',
+        component: () => import('@/views/CashierRedeemSuccessPage.vue')
       }
     ]
   }
