@@ -21,13 +21,7 @@
       </ion-header>
     
       <MerchantVoucherDetail :voucherListProp="this.voucherList" :merchantProp="this.merchant"></MerchantVoucherDetail>
-      <ion-footer>
-        <ion-toolbar>
-          <TestBuyContent name="Test Buy Page"/>
-        </ion-toolbar>
-      </ion-footer>
     </ion-content> 
-
   </ion-page>
 
 
@@ -36,13 +30,12 @@
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon} from '@ionic/vue';
 import MerchantVoucherDetail from '../components/MerchantVoucherDetail.vue';
-import TestBuyContent from '../components/TestBuyContent.vue';
 import {db} from '../main';
 import { defineComponent } from '@vue/runtime-core';
 
 export default defineComponent({
   name: 'Tab2',
-  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, MerchantVoucherDetail, TestBuyContent},
+  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, MerchantVoucherDetail},
   data() {
     return{
       merchantName: "",
@@ -109,6 +102,10 @@ ion-title {
   font-size: 25px;
   text-align: center;
   padding-bottom: 10px;
+}
+
+ion-footer {
+  position: relative;
 }
 </style>
 
