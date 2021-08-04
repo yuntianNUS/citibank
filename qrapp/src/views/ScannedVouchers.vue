@@ -10,11 +10,6 @@
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>        
-
-            <ion-subtitle class="material-icons" slot="start" v-on:click='back()'>
-              arrow_back_ios
-            </ion-subtitle>
-
           <ion-title size="large">Redeemed</ion-title>
         </ion-toolbar>
         <ion-list>
