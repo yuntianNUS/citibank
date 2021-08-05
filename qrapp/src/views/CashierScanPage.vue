@@ -162,6 +162,7 @@ export default  {
       })
     }, //end qr scanner methods
     async presentFailedAlert() {
+      this.pause()
       console.log("Present Failed Called")
       const alert = await alertController
         .create({
@@ -169,12 +170,18 @@ export default  {
           header: 'Invalid QR Code',
           subHeader: 'This is an invalid QR-Code. It could be already redeemed.',
           message: `<img src="https://toppng.com/uploads/preview/wrong-cross-symbol-11562969015bvubqupjq3.png" alt="g-maps" style="border-radius: 2px">`,
-          buttons: ['OK'],
+          buttons: [{
+            text: "Ok",
+            handler: () => {
+              console.log('HERE')
+              this.unpause()
+            }
+          }],
         });
       await alert.present();
 
-      const { role } = await alert.onDidDismiss();
-      console.log('onDidDismiss resolved with role', role);
+      // const { role } = await alert.onDidDismiss();
+      // console.log('onDidDismiss resolved with role', role);
     },
     async presentPassAlert() {
       console.log("Present PASS Called")
@@ -184,7 +191,13 @@ export default  {
           header: 'Success',
           subHeader: '',
           message: `<img src="https://icon2.cleanpng.com/20180404/gdq/kisspng-check-mark-computer-icons-clip-art-green-tick-5ac5328d7fdf55.2729449315228729735238.jpg" alt="g-maps" style="border-radius: 2px">`,
-          buttons: ['OK'],
+          buttons: [{
+            text: "Ok",
+            handler: () => {
+              this.unpause()
+              this.$router.push('/tabs/cashier/scannedVouchers')
+            }
+          }],
         });
       await alert.present();
 
