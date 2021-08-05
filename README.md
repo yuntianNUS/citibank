@@ -1,5 +1,8 @@
 # Citibank Hackathon 
 ## Team 14: Natalie Yeo, Jorina Lim, Sabrina Yeo, Gu YunTian
+[Slides Link](https://docs.google.com/presentation/d/1gvQwlplVhKwsokrewrXHo47PnWTspsFoXmsveoDLtmY/edit?usp=sharing)
+[Client-Side Mobile App GitHub Repo](https://github.com/yuntianNUS/citibank)
+[Server-Side Admin App GitHub Repo](https://github.com/jorinalim/React-Firebase-CitiHack-Admin)
 ## _CitiLife: FrontEnd Mobile Application_. Powered by VueJS, Ionic and Firebase
 
 #### CitiLife is a cloud-enabled, mobile-ready, Ionic-Vue-powered Application with Firebase's Cloud Firestore as the database.
