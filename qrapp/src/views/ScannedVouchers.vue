@@ -66,7 +66,7 @@ export default  {
                 if (redeemValueType == "$") {
                   redeemValueText = "$" + redeemValue
                 } else {
-                  redeemValueText = redeemValue + ' %'
+                  redeemValueText = redeemValue + '%'
                 }
                 this.redeemedList.push({
                   redeemName: redeemName,

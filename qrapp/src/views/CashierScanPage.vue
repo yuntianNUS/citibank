@@ -55,7 +55,8 @@ export default  {
       voucherTypeRef: null,
       isApplicationVoucher: null,
       isVoucherRedeemable: null,
-      failImgUrl: "https://www.google.com/url?sa=i&url=https%3A%2F%2Ftoppng.com%2Fwrong-cross-symbol-PNG-free-PNG-Images_183175&psig=AOvVaw1rTvSBDyWZQyIitumY7sMb&ust=1628196964102000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCLD8mb-gmPICFQAAAAAdAAAAABAD"
+      failImgUrl: "https://www.google.com/url?sa=i&url=https%3A%2F%2Ftoppng.com%2Fwrong-cross-symbol-PNG-free-PNG-Images_183175&psig=AOvVaw1rTvSBDyWZQyIitumY7sMb&ust=1628196964102000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCLD8mb-gmPICFQAAAAAdAAAAABAD",
+      voucherValue: null,
     }
   }, 
 
@@ -108,6 +109,16 @@ export default  {
             this.paymentType = documentSnapshot.data().paymentType
             this.userref = documentSnapshot.data().userRef
             this.voucherTypeRef = documentSnapshot.data().voucherTypeRef
+
+            this.voucherTypeRef.get().then((snapshot)=> {
+              const value = snapshot.data().value
+              const type = snapshot.data().valueType
+              if (type == "$") {
+                this.voucherValue = "$" + value
+              } else {
+                this.voucherValue = value + "%"
+              }
+            })
           }
         })
     },
@@ -189,7 +200,7 @@ export default  {
         .create({
           cssClass: 'my-custom-class',
           header: 'Success',
-          subHeader: '',
+          subHeader: 'Redeemed Value: ' + this.voucherValue,
           message: `<img src="https://icon2.cleanpng.com/20180404/gdq/kisspng-check-mark-computer-icons-clip-art-green-tick-5ac5328d7fdf55.2729449315228729735238.jpg" alt="g-maps" style="border-radius: 2px">`,
           buttons: [{
             text: "Ok",
