@@ -1,7 +1,7 @@
 # Citibank Hackathon 
 ## Team 14: Natalie Yeo, Jorina Lim, Sabrina Yeo, Gu YunTian
-[Slides Link](https://docs.google.com/presentation/d/1gvQwlplVhKwsokrewrXHo47PnWTspsFoXmsveoDLtmY/edit?usp=sharing)
-[Client-Side Mobile App GitHub Repo](https://github.com/yuntianNUS/citibank)
+[Slides Link](https://docs.google.com/presentation/d/1gvQwlplVhKwsokrewrXHo47PnWTspsFoXmsveoDLtmY/edit?usp=sharing) \n
+[Client-Side Mobile App GitHub Repo](https://github.com/yuntianNUS/citibank) \n
 [Server-Side Admin App GitHub Repo](https://github.com/jorinalim/React-Firebase-CitiHack-Admin)
 ## _CitiLife: FrontEnd Mobile Application_. Powered by VueJS, Ionic and Firebase
 
