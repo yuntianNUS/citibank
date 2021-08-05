@@ -16,10 +16,6 @@
         - Authentication
         - Scan QR Code presented by Customer to redeem it
         - View redeemed vouchers and redemption details
-- Server Application:
-    - Authentication for merchants
-    - Create and upload vouchers
-    - View All Transactions (Voucher Purchases and Voucher Redemptions)
 
 # Running CitiLife
 ```
